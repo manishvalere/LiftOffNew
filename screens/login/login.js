@@ -1,7 +1,7 @@
 import { lOG_IN, LOGIN_SUCCESS, LOGIN_FAILUARE, LOG_OUT } from '../../constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Platform,TextInput,SafeAreaView, TouchableOpacity, Image,KeyboardAvoidingView,ScrollView,ActivityIndicator,Dimensions } from 'react-native';
+import { View, Text,StyleSheet,Switch,Platform,TextInput,SafeAreaView, TouchableOpacity, Image,KeyboardAvoidingView,ScrollView,ActivityIndicator,Dimensions } from 'react-native';
 import { connect } from 'react-redux'
 import { login, loginInit } from '../../actions';
 import { Container, Header, Content, Item, Input, Icon,Button } from 'native-base';
@@ -18,15 +18,22 @@ export class LoginScreen extends Component{
             email:'',
             phone:'',
             password:'',
-            deviceToken:''
+            deviceToken:'',
+            rememberMe:false,
+            username:''
         }
     }
-    componentDidMount(){
+    async  componentDidMount(){
         this.props.loginInit();
         const {  deviceToken } = this.props.route.params;
         this.setState({
             deviceToken:deviceToken
-        })
+        });
+        const user = await this.getRememberedUser();
+        this.setState({ 
+        email: user.username || "", 
+        password:user.password || "",
+        rememberMe: user ? true : false });
     }
     componentDidUpdate(prevProps){
         if(prevProps.autherror !== this.props.autherror)
@@ -105,12 +112,62 @@ export class LoginScreen extends Component{
             this._loginHandler()
         }
     }
+    toggleRememberMe = value => {
+        console.log('toggle', value)
+        this.setState({ rememberMe: value })
+          if (value === true) {
+        //user wants to be remembered.
+          this.rememberUser();
+        } else {
+          this.forgetUser();
+        }
+    } 
+    rememberUser = async () => {
+        console.log('remember user is callign',)
+        try {
+            // obj={
+            //     email:this.state.email,
+            //     password:this.state.password
+            // }
+          await AsyncStorage.setItem('username', this.state.email);
+          await AsyncStorage.setItem('pass', this.state.password);
+        } catch (error) {
+          console.log('eror emenbrt', error)
+        }
+        };
+        getRememberedUser = async () => {
+            console.log('get remn=mbers is calling')
+        try {
+          const username = await AsyncStorage.getItem('username');
+          const password = await AsyncStorage.getItem('pass');
+          console.log('username i get', username, password)
+          if (username !== null && password !== null) {
+            // We have username!!
+            let obj ={
+                'username':username,
+                'password':password
+            }
+            return obj;
+          }
+        } catch (error) {
+          console.log('getremeber', error)
+        }
+        };
+        forgetUser = async () => {
+            try {
+              await AsyncStorage.removeItem('username');
+              await AsyncStorage.removeItem('pass');
+            } catch (error) {
+             // Error removing
+            }
+          };        
     render(){
        
        
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 10
        
         //alert(this.props.user)
+        console.log('emailllll',this.state.email)
         if(this.props.authLoading){
             return(
                 <View style={{justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor:'#1F1F1F', }}>
@@ -140,7 +197,7 @@ export class LoginScreen extends Component{
                    placeholder='Email' 
                    icon_type='Fontisto' 
                    icon='email'
-                   value={this.props.email}
+                   value={this.state.email}
                    onChangeText={text => this.onchangeEmail(text)}
                    name='email'
                    keyboardType={'email-address'}
@@ -161,12 +218,18 @@ export class LoginScreen extends Component{
                    <Text style={styles.error}>{this.state.passwordError}</Text>
                    
                    {/* {this.state.passwordError && <Text style={styles.error}>{this.state.passwordError}</Text>} */}
-                <View  style={styles.forgot_text_block}>
+                   <View  style={styles.forgot_text_block}>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('forgot')}>
                         <Text style={styles.forgotPassword_text}>
                             Forgot Password?
                         </Text>
                     </TouchableOpacity>
+                </View>  
+                <View  style={styles.forgot_text_block}>
+                <Switch
+                value={this.state.rememberMe}
+                onValueChange={(value) => this.toggleRememberMe(value)}
+                /><Text>Remember Me</Text>
                 </View>
                 
                 </View>
@@ -227,6 +290,7 @@ const styles = StyleSheet.create({
         fontFamily:'Montserrat-Regular'
     },
     forgot_text_block:{
+
         height:windowHeight *(3/100),
         justifyContent:'flex-start',
         alignItems:'flex-end'

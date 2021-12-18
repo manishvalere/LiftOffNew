@@ -40,12 +40,13 @@ export class PersonalBest extends Component{
             challenge:null,
             value: 'single',
             change:false,
-            specific:null
+            specific:null,
+            filterData:false,
         }
     }
-    componentWillUnmount(){
-        this.applyFilter(this.state.category_id, this.state.sub_category_id, this.state.specific)
-    }
+    // componentWillUnmount(){
+    //     this.applyFilter(this.state.category_id, this.state.sub_category_id, this.state.specific, )
+    // }
 
     applyFilter=(cat_id, sub_id, specific)=>{
       var  data = {};
@@ -76,6 +77,9 @@ export class PersonalBest extends Component{
       //console.log('dataa in filter' , data )
        this.props.dispatchgetPersonalByFilter(data,this.props.JWT_Token);
        //this.clear_all();
+       this.setState({
+           filterData:true
+       })
        this.close_modal();
     }
     personalRecord = (item)=>{
@@ -98,6 +102,69 @@ export class PersonalBest extends Component{
                 change:true
             })
         }
+    }
+    renderDateData =(item)=>{
+        const ii = item.item;
+        console.log('log',ii)
+        return(
+            // <View><Text>{ii.date}</Text></View>
+            <View style={styles.item_bloack} key={item.index}>
+                {/* <View style={styles.firstBlock}> */}
+                   <View style={styles.head_bloack}>
+                   <View style={{width:12, height:12, borderRadius:6, backgroundColor:'#ADF350', opacity:0.7, marginRight:10}}/>
+                   <Text style={styles.challenge_name}>{ii.date}</Text>
+                   
+                   {/* <Text style={styles.date_text}>{ii.exercise_date}</Text> */}
+                   </View>
+                   
+                    {
+                        ii.log_details.map((_i,ind)=>{
+                            return(
+                                <View style={{height:'auto', marginTop:5, marginBottom:5,backgroundColor:'#1F1F1F',alignItems:'center',justifyContent:'center', width:'90%',borderRadius:5, paddingVertical:10}}>
+                                    <View style={{width:'90%', flexDirection:'row', justifyContent:'space-between', alignItems:'center', borderBottomColor:'rgba(255, 255, 255, 0.3)', borderBottomWidth:1.5}}>
+                                        <Text style={styles.challenge_name_}>
+                                           {_i.subcategory_name}
+                                           
+                                        </Text>
+                                        <Text style={styles.challenge_detail}>
+                                           {_i.exercise_date}
+                                        </Text>
+                                    </View>
+                                    {/* <View style={styles.seprator}>
+
+                                    </View> */}
+                <View style={{width:'90%',alignItems:'flex-start',paddingVertical:5 }}>
+                    {
+                       JSON.parse(_i.description).map((i, index)=>{
+                     //  console.log('i.exercise_type',ii.exercise_type)
+                            if(_i.exercise_type == 'All'){
+                                
+                                return(
+                            
+                                    <Text key={ index} style={styles.challenge_detail}>{i.Sets} Sets | {i.Reps} Reps | {i.Weight} lbs Weight</Text>
+                                )
+                            }else{
+                                return(
+                                    <Text key={ index} style={styles.challenge_detail}>{i.Distance} Miles  | {i.Minute} : {i.Seconds} Hour | {i.Calories} Calories</Text>
+                                )
+                            }
+                        
+                       })
+                   }
+                   </View>
+                       {/* <FlatList
+                       data={JSON.parse(i.description)}
+                       renderItem={(item)=>this.personalRecord}
+                       keyExtractor={(item,index)=>index.toString}
+                       /> */}
+                    </View>
+                            )
+                        })
+                    }
+                {/* </View> */}
+                  
+            </View>
+        )
     }
     renderItem=(item)=>{
         const ii = item.item
@@ -149,30 +216,35 @@ export class PersonalBest extends Component{
     }
     componentDidMount(){
      const { cat_id,sub_id,specific} = this.props.route.params;
-        //console.log('cat_id', cat_id, sub_id,specific)
+     console.log('component did mound is calling')
+        console.log('cat_id', cat_id, sub_id,specific)
         this.setState({
             category_id:cat_id,
             sub_category_id:sub_id,
-            specific:specific
+            specific:specific, 
+            filterData:false,
         })
         this.props.dispatchgetMaincategory();
         
-        if(specific){
-            //console.log('specific true is calling')
-            this.applyFilter(cat_id, sub_id, specific)
-        }else{
-            //console.log('all personal best is calling')
+        // if(specific){
+            console.log('specific true is calling')
+            //this.applyFilter(cat_id, sub_id, specific)
+        // }else{
+            console.log('all personal best is calling')
             this.props.dispatchgetPersonalBest(this.props.JWT_Token);
             this.props.dispatchsetSubcategoryNull();
-        }
+        //}
     }
     refresh=()=>{
        
         if(this.state.specific){
-            //console.log('specific true is calling')
+            console.log('specific true is calling')
             this.applyFilter(this.state.category_id, this.state.sub_category_id, this.state.specific)
         }else{
-            //console.log('all personal best is calling')
+            console.log('all personal best is calling');
+            this.setState({
+                filterData:false
+            })
             this.props.dispatchgetPersonalBest(this.props.JWT_Token);
         }
     }
@@ -280,7 +352,7 @@ export class PersonalBest extends Component{
              sub = this.props.sub_category;
         //console.log('sub cate in personal', this.props.sub_category)
         }
-        //console.log('props in personal berst screen ',this.props.personal_best)
+        console.log('props in personal berst screen ',this.props.personal_best)
         return(
             <View style={styles.container}>
                 <CustomHeader title='Exercise Log' onback={this.back} onmodalbtn={this.openModal}/>
@@ -520,8 +592,8 @@ export class PersonalBest extends Component{
                 </CustomModal>
                 <FlatList
                   data={this.props.personal_best}
-                  keyExtractor={(item,index)=>item.id.toString()}
-                  renderItem={this.renderItem}
+                  //keyExtractor={(item,index)=>item.id.toString()}
+                  renderItem={this.state.filterData ? this.renderItem : this.renderDateData}
                   ListEmptyComponent={this.emptyComponent}
                   refreshControl={
                     <RefreshControl
@@ -696,7 +768,9 @@ const styles = StyleSheet.create({
         marginHorizontal:5,
         marginVertical:10,
         flexDirection:'column',
-        position:'relative'
+        position:'relative',
+        alignItems:'center',
+        paddingVertical:10
     },
     item_bloack1:{
         width:width-20, 
@@ -726,8 +800,8 @@ const styles = StyleSheet.create({
         position:'relative'
     },
     seprator:{
-        height:1, 
-        backgroundColor:'#1F1F1F'
+        height:3, 
+        backgroundColor:'rgba(255, 255, 255, 0.3)'
     },
     round_absolute:{
         position:'absolute',
@@ -746,10 +820,22 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 14,
         lineHeight: 17,
+        color: '#ADF350',
+        opacity:0.7,
+        fontFamily:'Montserrat-Regular',
+        //paddingVertical:5,
+        flex:0.7
+       
+    },
+    challenge_name_:{
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 14,
+        lineHeight: 17,
         color: '#FFFFFF',
         fontFamily:'Montserrat-Regular',
         paddingVertical:5,
-        flex:0.7
+        //flex:0.7
        
     },
     challenge_detail:{
@@ -759,7 +845,7 @@ const styles = StyleSheet.create({
         lineHeight: 15,
         color: 'rgba(255, 255, 255, 0.3)',
         marginVertical:3,
-        marginLeft:25,
+        //marginLeft:25,
         fontFamily:'Montserrat-Regular'
     },
     progress_text:{
@@ -773,9 +859,11 @@ const styles = StyleSheet.create({
     },
     head_bloack:{
         flexDirection:'row',
-        justifyContent:'space-around',
+        width:'90%',
+        justifyContent:'flex-start',
+        //justifyContent:'space-around',
         alignItems:'center',
-        height:50
+        paddingVertical:5
     },
     date_text:{
         fontFamily: 'Montserrat-Regular',

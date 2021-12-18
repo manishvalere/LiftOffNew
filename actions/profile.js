@@ -115,16 +115,16 @@ export function getCompleteChallenges(jwt){
       dispatch({ type:  GET_PERSONAL_BEST });
       axios({
         method: 'POST',
-        url: color.baseURL + 'auth/personal-best',
-       headers: getHeaders(jwt),
+        url: color.baseURL + 'auth/log-deatils',
+        headers: getHeaders(jwt),
         // data: {
         //   challenge_id:id,
         //   receiver_user_mob_no:number
         // }
       })
-  
+      
       .then((response) => {
-      //   console.log('response in personal best ', response.data.data, response.status)
+         console.log('response in personal best ', response.data.data, response.status)
         if(response.data.status == 200) {
           
           dispatch({ type:  GET_PERSONAL_BEST + '_SUCCESS', payload: response.data.data, image_url:response.data.url })
@@ -154,7 +154,7 @@ export function getCompleteChallenges(jwt){
         if(error) {
           dispatch({ type:  GET_PERSONAL_BEST + '_FAILUARE', payload: error})
         }
-       // console.log('error in catch',error);
+        console.log('error in catch',error);
         dispatch({ type:    GET_PERSONAL_BEST + '_FAILUARE', payload: error})
       });
     }
