@@ -3,13 +3,13 @@ import {View , Text, StyleSheet, TouchableOpacity,Dimensions,Image} from 'react-
 import {MaterialIcons} from 'react-native-vector-icons'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-export default class ConnectInvite extends Component{
+export default class InviteFriend extends Component{
     
     render(){
         const item = this.props.item 
         if(item !== null && item !== undefined){
 
-        
+        console.log('item in invite', item)
         return(
             <TouchableOpacity
                 style={styles.container}
@@ -21,15 +21,21 @@ export default class ConnectInvite extends Component{
                 <View style={styles.second_block}>
                     <View style={styles.name_block}>
                         {/* <Text style={styles.name_text}>Eather Howard</Text> */}
-                        <Text style={styles.name_text}>{item.first_name}</Text>
-                        <Text style={styles.phone}>{item.receiver_user_mob_no}</Text>
+                        <Text style={styles.name_text}>{item.givenName} {item.middleName} {item.familyName}</Text>
+                        <Text style={styles.phone}>{item.number}</Text>
                     </View>
-                    {this.props.invite ? <View style = {styles.icon_block}>
+                    {item.connected ? <View style = {styles.icon_block}>
                         <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width}>
-                           <Text style={styles.btn_text}>Invite</Text>
+                           <Text style={styles.btn_text}>Connect</Text>
                         </TouchableOpacity>
                         
-                    </View> : null}
+                    </View> : 
+                    <View style = {styles.icon_block}>
+                    <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width_1}>
+                       <Text style={styles.btn_text}>Invite</Text>
+                    </TouchableOpacity>
+                    
+                </View>}
                     
                 </View>
             </TouchableOpacity>
@@ -82,6 +88,14 @@ const styles = StyleSheet.create({
         width:60,
         height:32, 
         backgroundColor:'#ADF350',
+        justifyContent:'center',
+        alignItems:'center',
+        borderRadius:10
+    },
+    icon_width_1:{
+        width:60,
+        height:32, 
+        backgroundColor:'#FFFFFF',
         justifyContent:'center',
         alignItems:'center',
         borderRadius:10

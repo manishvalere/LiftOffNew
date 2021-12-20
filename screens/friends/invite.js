@@ -12,53 +12,149 @@ import ContactCarc from '../../components/Contactcard';
 import { connect } from 'react-redux';
 import {  getJoinedFriend} from '../../actions/challenge';
 import ConnectInvite from '../../components/Connect_invite';
+import Contacts from 'react-native-contacts';
+import { getUserList } from '../../actions';
+import InviteFriend from '../../components/inviteFriend';
 const data = ['1', '2', '3', '4','5', '6', '7', '8', '9']
 export  class Invite extends Component{
     constructor(props){
         super(props);
         this.state={
-            joined_friend:[]
+            contact:[],
+            contact_:[]
         }
     }
     renderItem=(item)=>{
         return(
-            <ConnectInvite />
+            <InviteFriend item={item.item} invite={true}/>
         )
         
     }
-   
+    
     emptycomp=()=>{
         return(
             <View
             style={styles.emptyblock}>
            <Text style={styles.name_text}>No Joined Friends</Text>
-        </View>
+           </View>
         )
     }
-    render(){
-        if(this.props.contact !== undefined){
-           // console.log('Joined_screen contact', this.props.contact)
+    
+    componentDidUpdate(prevProps){
+        if(this.props.userList !== prevProps.userList){
+            let contact_ =this.state.contact;
+            let users = this.props.userList;
+           
+            let result = contact_.filter(o1 => {
+             
+             
+              users.forEach((s) => {
+                  
+                  if (o1.number == s.phone_number) {
+
+                      o1.connected = true
+                      
+
+                      }
+                  else {
+
+                    o1.connected = false
+                    
+                  }
+              })
+            return contact_;  
+          });
+              console.log('contacttcctc', result)
+              this.setState({
+                contact_:result
+              })
+            //}
+            // if(users !== null){
+            // let result = contact_.filter(o1 => users.some(o2 => o1.number === o2.phone_number));
+            // console.log('resulttttt',result)
+            // }
+        }else{
+            console.log('else is caling in CDU')
         }
+    }
+    refresh=()=>{
+        this.props.dispatchgetUserList(this.props.JWT_Token);
+    }
+    componentDidMount(){
+        console.log('cdm is calling')
+    this.refresh()
+    
+    if (Platform.OS === 'android') {
+      console.log('if android')
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
+            title: 'Contacts',
+            message: 'This app would like to view your contacts.',
+          }).then(() => {
+            this.loadContacts();
+          }
+        );
+      } else {
+        this.loadContacts();
+      }
+    }
+    loadContacts = () => {
+        console.log('load contact is calling')
+         Contacts.getAll((err, contacts) => {
+           console.log('err',err, contacts)
+             contacts.sort(
+               (a, b) => 
+                 a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+             );
+             var states=contacts.filter((e)=> { return e.phoneNumbers.length > 0})
+             if (err === 'denied') {
+               alert('Permission to access contacts was denied');
+             //  console.warn('Permission to access contacts was denied');
+             } else {
+            //    this.setState({
+            //        contacts:states
+            //    })
+            for(let i=0; i<states.length; i++){
+                let num =   states[i].phoneNumbers[0].number
+              //  console.log('num',num)
+              var  new_num  = num.replace(/([-*?^=!:${}()|\[\]\/\\])/g, "");
+              var  new_space_num = new_num.replace(/ /g, "")
+                states[i].phoneNumbers[0].number = new_space_num;
+                //new_space_num = parseInt(new_space_num)
+                // let new_str = new_space_num.slice(new_space_num.length - 10);
+                
+                states[i].number = new_space_num;
+                }
+                this.setState({
+                    contact:states
+                }) 
+              
+             }
+           });
+        
+       };
+    render(){
+        console.log('contact',this.state.contact, this.props.userList)
         return(
             <View style={styles.container}>
                 
                 <View style={{flex:1}}>
                     <FlatList
-                      data={data}
+                      data={this.state.contact_}
                       renderItem={this.renderItem}
                     //    keyExtractor={(index)=>index}
                       showsVerticalScrollIndicator={false}
                       ListEmptyComponent={this.emptycomp}
-                    //   refreshControl={
-                    //     <RefreshControl
-                    //       refreshing={this.props.challengeLoading}
-                    //       onRefresh={this.refresh}
-                    //       tintColor='white'
-                    //       color='white'
-                    //       progressBackgroundColor='white'
+                      refreshControl={
+                        <RefreshControl
+                          refreshing={this.props.friendLoading}
+                          onRefresh={()=>this.refresh()}
+                          tintColor='white'
+                          color='white'
+                          progressBackgroundColor='white'
                           
-                    //     />
-                    //   }
+                        />
+                      }
                     />
                 </View>
                 
@@ -70,14 +166,14 @@ export  class Invite extends Component{
 }
 const mapStateToProps = state => {
     const {JWT_Token} = state.auth
+    const {friendLoading,userList ,friendError} = state.friend
     
-    const {challengeLoading,challengeError,joinedFriend, challenge_id, contact,invitation_sent} = state.challenge
-    return { JWT_Token,challengeLoading,challengeError,joinedFriend,challenge_id,contact,invitation_sent}
+    return { JWT_Token,friendLoading,userList,friendError }
   
   }
   const mapDispatchToProps = {
     
-    dispatchgetJoinedFriend:(jwt,id)=>getJoinedFriend(jwt, id)
+    dispatchgetUserList:(jwt)=>getUserList(jwt)
    }
   export default connect(mapStateToProps, mapDispatchToProps)(Invite)
 const styles = StyleSheet.create({

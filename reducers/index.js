@@ -5,6 +5,7 @@ import feedReducer from './feedReducer';
 import fitnessReducer from './finessReducer';
 import challengeReducer from './challengeReducer';
 import profileReducer from './profileReducer';
+import friendReducer from './friendReducer';
 const rootReducer = combineReducers(
 { 
  count: countReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers(
  fitness:fitnessReducer,
  feed:feedReducer,
  challenge:challengeReducer,
- profile:profileReducer
+ profile:profileReducer,
+ friend:friendReducer
 }
 );
 export default rootReducer;

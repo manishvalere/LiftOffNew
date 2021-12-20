@@ -98,7 +98,7 @@ export class Friend_Home extends Component{
                       </View>
                   </View> : null}
                   {data.length > 0 ?
-                <View style={[styles.midblock, {flex:0.55}]}>
+                <View style={[styles.midblock, {flex:0.7}]}>
                 <MyTabs/>
                 </View>  
                 : 
