@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import {View , Text , TouchableOpacity,StyleSheet} from 'react-native';
+import {View , Text , TouchableOpacity,StyleSheet,Image,Dimensions} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
 import  Connected_ from './connect';
@@ -11,6 +11,10 @@ const data = ['1', '2', '3'];
 //  const data = []
 import ConnectInvite from '../../components/Connect_invite';
 import AcceptDeny from '../../components/accept_deny';
+import { actionOnRequest, getFriendRequest } from '../../actions';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+import {Toast, Root} from 'native-base';
 const Tab = createMaterialTopTabNavigator();
 
 function MyTabs() {
@@ -73,31 +77,84 @@ function MyTabs() {
   );
 }
 export class Friend_Home extends Component{
+    constructor(props){
+        super(props);
+        this.ChildElement = React.createRef();
+    }
+    componentDidUpdate(prevProps){
+        if(this.props.message !== prevProps.message){
+            if(!this.props.friendLoading){
+                this.props.dispatchgetFriendRequest(this.props.JWT_Token);
+                return Toast.show({
+                    text: this.props.message,
+                    textStyle: { color: "green" },
+                   // buttonText: "Okay",
+                    duration:2500
+                  })
+            }
+        }
+    }
     renderItem=(item)=>{
+        const i = item.item
+        console.log('i',i)
         return(
-            <AcceptDeny />
+            <TouchableOpacity
+                style={styles.container1}
+               
+            >
+                <View style={styles.first_block1}>
+                    <Image style={styles.image_block1} source={require('../../assets/challenge/friend_profile.png')}/>
+                </View>
+                <View style={styles.second_block1}>
+                    <View style={styles.name_block1}>
+                        {/* <Text style={styles.name_text}>Eather Howard</Text> */}
+                        <Text style={styles.name_text1}>{i.first_name} {i.last_name}</Text>
+                        <Text style={styles.phone1}>{i.phone_number}</Text>
+                    </View>
+                    <View style = {styles.icon_block1}>
+                        <TouchableOpacity onPress={()=> this.props.dispatchActionOnRequest('Accept', this.props.JWT_Token,i.invite_ID )} style={styles.icon_width1}>
+                           <Text style={styles.btn_text1}>Accept</Text>
+                        </TouchableOpacity>
+                        
+                    </View>
+                    <View style = {styles.icon_block1}>
+                        <TouchableOpacity onPress={()=> this.props.dispatchActionOnRequest('Decline', this.props.JWT_Token,i.invite_ID )}  style={styles.icon_width_1}>
+                           <Text style={styles.btn_text1}>Deny</Text>
+                        </TouchableOpacity>
+                        
+                    </View>
+                </View>
+            </TouchableOpacity>
         )
         
     }
-   
+    action=(item)=>{
+        // const childelement = this.ChildElement;
+             //const type = childelement.state.value
+            // console.log('itemmdmdd',item,childelement)
+    }
+   componentDidMount(){
+       this.props.dispatchgetFriendRequest(this.props.JWT_Token);
+       
+   }
     render(){
         return(
             <View style={styles.container}>
             
-                  {data.length > 0 ? <View style={styles.first_block }>
+                  {this.props.friend_request.length > 0 ? <View style={styles.first_block }>
                       <View>
                       
                       <Text  style={styles.title_text}>Friend Request</Text>
                       
                       
                          <FlatList
-                         data={data}
+                         data={this.props.friend_request}
                          renderItem={this.renderItem}
                          showsVerticalScrollIndicator={false}
                          />
                       </View>
                   </View> : null}
-                  {data.length > 0 ?
+                  {this.props.friend_request.length > 0 ?
                 <View style={[styles.midblock, {flex:0.7}]}>
                 <MyTabs/>
                 </View>  
@@ -112,7 +169,20 @@ export class Friend_Home extends Component{
         )
     }
 }
-export default Friend_Home;
+const mapStateToProps = state => {
+    const {JWT_Token} = state.auth
+    const {friendLoading,userList ,friendError,message,friend_request} = state.friend
+    
+    return { JWT_Token,friendLoading,userList,friendError,message,friend_request }
+  
+  }
+  const mapDispatchToProps = {
+    
+    dispatchgetFriendRequest:(jwt)=>getFriendRequest(jwt),
+    dispatchActionOnRequest:(type,jwt,id)=>actionOnRequest(type,jwt,id)
+   }
+  export default connect(mapStateToProps, mapDispatchToProps)(Friend_Home)
+
 const styles = StyleSheet.create({
     container:{
         flex:1,
@@ -162,6 +232,91 @@ const styles = StyleSheet.create({
     },
     request_block:{
 
+    },
+    container1:{
+        width:windowWidth-50,
+        height:60,
+        backgroundColor:'#262727',
+        marginVertical:5,
+        flexDirection:'row', 
+        borderRadius:10,
+        marginHorizontal:10,
+        alignItems:'center',
+        //justifyContent:'center'
+
+    },
+    first_block1:{
+        flex:0.2,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    second_block1:{
+        flex:0.75,
+        justifyContent:'space-between',
+        alignItems:'center',
+        flexDirection:'row'
+    },
+    image_block1:{
+        width:40,
+        height:40, 
+        borderRadius:40/2
+    },
+    name_block1:{
+        flexDirection:'column',
+        justifyContent:'center',
+        alignItems:'flex-start',
+        flex:0.5
+    },
+    icon_block1:{
+        justifyContent:'center',
+        alignItems:'center',
+        flex:0.2,
+       
+    },
+    icon_width1:{
+        width:60,
+        height:32, 
+        backgroundColor:'#ADF350',
+        justifyContent:'center',
+        alignItems:'center',
+        borderRadius:10
+    },
+    icon_width_1:{
+        width:60,
+        height:32, 
+        backgroundColor:'#FFFFFF',
+        justifyContent:'center',
+        alignItems:'center',
+        borderRadius:10
+    },
+    name_text1:{
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: 14,
+        lineHeight: 18,
+        letterSpacing: 0.2,
+        color:'#FFFFFF',
+        fontFamily:'Montserrat-Regular',
+    },
+    phone1:{
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: 10,
+        lineHeight: 18,
+        
+        letterSpacing: 0.2,
+        fontFamily:'Montserrat-Regular',
+
+        color: 'rgba(255, 255, 255, 0.5)'
+    },
+    btn_text1:{
+        fontFamily:'Montserrat-Regular',
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: 12,
+        lineHeight: 18,
+        letterSpacing: 0.2,
+        color: '#262727'
     }
     
 })

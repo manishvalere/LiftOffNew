@@ -9,7 +9,7 @@ export default class InviteFriend extends Component{
         const item = this.props.item 
         if(item !== null && item !== undefined){
 
-        console.log('item in invite', item)
+        //console.log('item in invite', item)
         return(
             <TouchableOpacity
                 style={styles.container}

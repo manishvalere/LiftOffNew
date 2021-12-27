@@ -21,8 +21,8 @@ export default class ConnectInvite extends Component{
                 <View style={styles.second_block}>
                     <View style={styles.name_block}>
                         {/* <Text style={styles.name_text}>Eather Howard</Text> */}
-                        <Text style={styles.name_text}>{item.first_name}</Text>
-                        <Text style={styles.phone}>{item.receiver_user_mob_no}</Text>
+                        <Text style={styles.name_text}>{item.first_name} {item.last_name}</Text>
+                            <Text style={styles.phone}>{item.phone_number} </Text>
                     </View>
                     {this.props.invite ? <View style = {styles.icon_block}>
                         <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width}>

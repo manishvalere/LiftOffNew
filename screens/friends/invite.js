@@ -13,8 +13,9 @@ import { connect } from 'react-redux';
 import {  getJoinedFriend} from '../../actions/challenge';
 import ConnectInvite from '../../components/Connect_invite';
 import Contacts from 'react-native-contacts';
-import { getUserList } from '../../actions';
+import { getUserList,inviteUser } from '../../actions';
 import InviteFriend from '../../components/inviteFriend';
+import {Toast, Root} from 'native-base';
 const data = ['1', '2', '3', '4','5', '6', '7', '8', '9']
 export  class Invite extends Component{
     constructor(props){
@@ -26,11 +27,14 @@ export  class Invite extends Component{
     }
     renderItem=(item)=>{
         return(
-            <InviteFriend item={item.item} invite={true}/>
+            <InviteFriend onPress={()=>this.inviteUser(item.item)} item={item.item} invite={true}/>
         )
         
     }
-    
+    inviteUser=(item)=>{
+      console.log('invire', item)
+      this.props.dispatchInviteUser(this.props.JWT_Token,item)
+    }
     emptycomp=()=>{
         return(
             <View
@@ -64,7 +68,7 @@ export  class Invite extends Component{
               })
             return contact_;  
           });
-              console.log('contacttcctc', result)
+            //    console.log('contacttcctc', result)
               this.setState({
                 contact_:result
               })
@@ -73,9 +77,18 @@ export  class Invite extends Component{
             // let result = contact_.filter(o1 => users.some(o2 => o1.number === o2.phone_number));
             // console.log('resulttttt',result)
             // }
-        }else{
-            console.log('else is caling in CDU')
+        };
+        if(this.props.message !== prevProps.message){
+          if(!this.props.friendLoading){
+            return Toast.show({
+              text: this.props.message,
+              textStyle: { color: "green" },
+             // buttonText: "Okay",
+              duration:2500
+            })
+          }
         }
+
     }
     refresh=()=>{
         this.props.dispatchgetUserList(this.props.JWT_Token);
@@ -101,7 +114,7 @@ export  class Invite extends Component{
     loadContacts = () => {
         console.log('load contact is calling')
          Contacts.getAll((err, contacts) => {
-           console.log('err',err, contacts)
+          // console.log('err',err, contacts)
              contacts.sort(
                (a, b) => 
                  a.givenName.toLowerCase() > b.givenName.toLowerCase(),
@@ -134,7 +147,7 @@ export  class Invite extends Component{
         
        };
     render(){
-        console.log('contact',this.state.contact, this.props.userList)
+        // /console.log('contact',this.state.contact, this.props.userList)
         return(
             <View style={styles.container}>
                 
@@ -166,14 +179,15 @@ export  class Invite extends Component{
 }
 const mapStateToProps = state => {
     const {JWT_Token} = state.auth
-    const {friendLoading,userList ,friendError} = state.friend
+    const {friendLoading,userList ,friendError,message} = state.friend
     
-    return { JWT_Token,friendLoading,userList,friendError }
+    return { JWT_Token,friendLoading,userList,friendError,message }
   
   }
   const mapDispatchToProps = {
     
-    dispatchgetUserList:(jwt)=>getUserList(jwt)
+    dispatchgetUserList:(jwt)=>getUserList(jwt),
+    dispatchInviteUser:(jwt,invite)=>inviteUser(jwt,invite)
    }
   export default connect(mapStateToProps, mapDispatchToProps)(Invite)
 const styles = StyleSheet.create({

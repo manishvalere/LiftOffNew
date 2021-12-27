@@ -42,7 +42,7 @@ export default class PersonalBest_Comp extends Component{
     }
     renderItem=(item)=>{
         const ii= item.item
-       const personal_data = ii.description
+       const personal_data = ii.description ?? []
       // console.log('personal data', personal_data)
         return(
             
@@ -113,7 +113,7 @@ export default class PersonalBest_Comp extends Component{
             
                 <FlatList
                   data={this.props.data}
-                  keyExtractor={(item)=>item.id.toString()}
+                    //keyExtractor={(item)=>item.id.toString()}
                   renderItem={this.renderItem}
                   horizontal={true}
                   ListEmptyComponent={this.rendernodata()}

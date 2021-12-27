@@ -181,23 +181,23 @@ export class ProfileScreen extends Component{
                                     <Text style={styles.name}>{user.first_name} {user.last_name}</Text>
                                 </View>
                                 <View style={styles.three_block}>
-                                <View>
+                                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Friend')} style={{backgroundColor:'#ADF350',alignItems:'center', paddingHorizontal:10,paddingVertical:5, borderRadius:6}}>
                                     <Text style={styles.number}>
                                         {this.props.gym_partner.gym_partner}
                                     </Text>
                                     <Text style={styles.gym_text}>
                                     Gym Friends
                                     </Text>
-                                </View>
-                                <View style={styles.horizontal}></View>
-                                <View>
+                                </TouchableOpacity>
+                                {/* <View style={styles.horizontal}></View> */}
+                                <TouchableOpacity style={{backgroundColor:'#ADF350',alignItems:'center', paddingHorizontal:10,paddingVertical:5, borderRadius:6}}>
                                     <Text style={styles.number}>
                                        {this.props.gym_partner.created_challenge}
                                     </Text>
                                     <Text style={styles.gym_text}>
                                     Created Challenges
                                     </Text>
-                                </View>
+                                </TouchableOpacity>
 
                                 </View>
                             </View>
@@ -433,19 +433,21 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         lineHeight: 22,
-        color: '#F8F8F8',
+        color: '#1F1F1F',
         fontFamily:'Montserrat-Regular'
     },
     three_block:{
-        height:40,
+        height:50,
         marginVertical:10, 
-        flexDirection:'row'
+        flexDirection:'row',
+        justifyContent:'space-between'
     },
     gym_text:{
         fontStyle: 'normal',
         fontSize: 12,
         lineHeight: 14,
-        color: '#FFFFFF',
+        fontWeight:'bold',
+        color: '#1F1F1F',
         opacity: 0.8,
         fontFamily:'Montserrat-Regular'
     },

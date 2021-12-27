@@ -432,14 +432,14 @@ export function createChallenge(id,type, description,jwt,date,SWR){
       });
     }
   }
-  export function getConnectedFriend(jwt){
+  export function getConnectedFriend_(jwt){
    
   //  console.log('connected friend is calling ')
     return (dispatch, getState) => {
       dispatch({ type: GET_CONNECTED_FRIEND });
       axios({
         method: 'POST',
-        url: color.baseURL + 'auth/connected-friends',
+        url: color.baseURL + 'auth/connected_friend_connection',
        headers: getHeaders(jwt),
         // data: {
         //   challenge_id:id,
@@ -480,6 +480,54 @@ export function createChallenge(id,type, description,jwt,date,SWR){
       });
     }
   }
+  export function getConnectedFriend(jwt){
+   
+    //  console.log('connected friend is calling ')
+      return (dispatch, getState) => {
+        dispatch({ type: GET_CONNECTED_FRIEND });
+        axios({
+          method: 'POST',
+          url: color.baseURL + 'auth/connected-friends',
+         headers: getHeaders(jwt),
+          // data: {
+          //   challenge_id:id,
+          //   receiver_user_mob_no:JSON.stringify(form)
+          
+          // }
+        })
+    
+        .then((response) => {
+        console.log('response in connected friend', response.data, response.status)
+          if(response.data.status == 200) {
+            
+            dispatch({ type: GET_CONNECTED_FRIEND + '_SUCCESS', payload: response.data.data, image_url:response.data.url })
+          
+          }else if(response.data.status == 401){
+            //console.log('response in login 401', response.error)
+            dispatch({type: GET_CONNECTED_FRIEND + '_FAILUARE',payload:response.message})
+          }else if(response.data.status == 201){
+            //console.log('response in login 401', response.error)
+            dispatch({type: GET_CONNECTED_FRIEND + '_FAILUARE',payload:response.message})
+          }
+          if(response.data.status == 422){
+            dispatch({type: GET_CONNECTED_FRIEND + '_FAILUARE',payload:response.message})
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            if(error.response.data.status == 401){
+             // console.log('get logout  is caliing in catch')
+              dispatch({ type: 'TOKENEXPIRE', payload: 'token_expire'})
+            }
+          }
+          if(error) {
+            dispatch({ type: GET_CONNECTED_FRIEND + '_FAILUARE', payload: error})
+          }
+         // console.log('error in catch',error);
+          dispatch({ type: GET_CONNECTED_FRIEND + '_FAILUARE', payload: error})
+        });
+      }
+    }
   export function getJoinedFriend(jwt, id){
    
     // console.log('get joined friend ', id)

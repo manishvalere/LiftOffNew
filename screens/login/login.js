@@ -219,18 +219,27 @@ export class LoginScreen extends Component{
                    
                    {/* {this.state.passwordError && <Text style={styles.error}>{this.state.passwordError}</Text>} */}
                    <View  style={styles.forgot_text_block}>
+                <View style={{flex:0.5,flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}> 
+                <Switch
+                 trackColor={{ false: "#ADF350", true: "#ADF350" }}
+                 thumbColor={this.state.rememberMe ? "#1F1F1F" : "#f4f3f4"}
+                 ios_backgroundColor="#3e3e3e"
+                value={this.state.rememberMe}
+                onValueChange={(value) => this.toggleRememberMe(value)}
+                />
+                <View style={{justifyContent:'center', alignItems:'center', marginLeft:5}}>
+                <Text style={styles.forgotPassword_text}>Remember Me!</Text>
+               
+                </View>
+                </View>  
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('forgot')}>
                         <Text style={styles.forgotPassword_text}>
                             Forgot Password?
                         </Text>
                     </TouchableOpacity>
+                    
                 </View>  
-                <View  style={styles.forgot_text_block}>
-                <Switch
-                value={this.state.rememberMe}
-                onValueChange={(value) => this.toggleRememberMe(value)}
-                /><Text>Remember Me</Text>
-                </View>
+                
                 
                 </View>
                 <View  style={styles.login_btn_block}>
@@ -290,10 +299,10 @@ const styles = StyleSheet.create({
         fontFamily:'Montserrat-Regular'
     },
     forgot_text_block:{
-
+        flexDirection:'row',
         height:windowHeight *(3/100),
-        justifyContent:'flex-start',
-        alignItems:'flex-end'
+        justifyContent:'space-between',
+        alignItems:'center'
     },
     login_btn_block:{
         height:windowHeight * (13/100),

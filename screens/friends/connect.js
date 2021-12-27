@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 import Search_Box from '../../components/search_box';
 import ContactCarc from '../../components/Contactcard';
 import { connect } from 'react-redux';
-import {  getConnectedFriend} from '../../actions/challenge';
+import {  getConnectedFriend_} from '../../actions/challenge';
 import ConnectInvite from '../../components/Connect_invite';
 const data = ['1', '2', '3', '4','5', '6', '7', '8', '9']
 export  class Connected_ extends Component{
@@ -87,7 +87,7 @@ const mapStateToProps = state => {
   }
   const mapDispatchToProps = {
     //dispatchinviteFriend:(jwt, id, form,connect_friend)=>inviteFriend(jwt,id,form,connect_friend),
-    dispatchgetConnectedFriend:(jwt)=>getConnectedFriend(jwt)
+    dispatchgetConnectedFriend:(jwt)=>getConnectedFriend_(jwt)
    }
   export default connect(mapStateToProps, mapDispatchToProps)(Connected_)
 const styles = StyleSheet.create({

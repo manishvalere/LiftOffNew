@@ -506,7 +506,7 @@ export class Add_sets extends Component{
             video_uri = url+'/'+detail.subcategory_video
         }
         
-        //console.log('this form',this.state.form)
+        console.log('this form',this.props.personal_best)
         
         return(
             // <SafeAreaView style={{flex:1}}>
@@ -618,7 +618,7 @@ export class Add_sets extends Component{
                         <Compete_Head onPress={()=>this.props.navigation.navigate('personal_best',{cat_id:this.state.category_id,sub_id:this.state.id, specific:true})} title='Exercise Log'/>
                         </View>
                         <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <PersonalBest_Comp data = {this.props.personal_best}/>
+                        { this.props.personal_best != null && this.props.personal_best.length >  0  ? <PersonalBest_Comp data = {this.props.personal_best}/> : null}
                         </View>
                     </View>
                 </View>

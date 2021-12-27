@@ -4,14 +4,16 @@ import {MaterialIcons} from 'react-native-vector-icons'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default class AcceptDeny extends Component{
-    
+    state = {
+		value: 'Accept',
+	};
     render(){
         const item = this.props.item
         //console.log('item in contact', item)
         return(
             <TouchableOpacity
                 style={styles.container}
-                onPress={this.props.onPress}
+               
             >
                 <View style={styles.first_block}>
                     <Image style={styles.image_block} source={require('../assets/challenge/friend_profile.png')}/>
@@ -19,17 +21,17 @@ export default class AcceptDeny extends Component{
                 <View style={styles.second_block}>
                     <View style={styles.name_block}>
                         {/* <Text style={styles.name_text}>Eather Howard</Text> */}
-                        <Text style={styles.name_text}>Esther Howard </Text>
-                        <Text style={styles.phone}>0919685758507</Text>
+                        <Text style={styles.name_text}>{item.first_name} {item.last_name}</Text>
+                        <Text style={styles.phone}>{item.phone_number}</Text>
                     </View>
                     <View style = {styles.icon_block}>
-                        <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width}>
+                        <TouchableOpacity onPress={ ()=>{this.setState({value:'Accept'});this.props.onPress;}} style={styles.icon_width}>
                            <Text style={styles.btn_text}>Accept</Text>
                         </TouchableOpacity>
                         
                     </View>
                     <View style = {styles.icon_block}>
-                        <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width_}>
+                        <TouchableOpacity onPress={ ()=>{this.setState({value:'Decline'});this.props.onPress;}}  style={styles.icon_width_}>
                            <Text style={styles.btn_text}>Deny</Text>
                         </TouchableOpacity>
                         
