@@ -9,7 +9,7 @@ import Compete_Head from '../../components/compet_head';
 import DatePicker from 'react-native-date-ranges';
 import CustomModal from '../../components/customModal';
 import Challenge_picker from '../../components/challenge_picker';
-import  {getSubcategory,getMaincategory, createChallenge, setSubcategoryNull ,getPersonalByFilter} from '../../actions';
+import  {getSubcategory,getMaincategory, createChallenge, setSubcategoryNull ,getPersonalBestNewFilter} from '../../actions';
 import FilterPicker from '../../components/filterPicker';
 import CustomHeader from '../../components/customeHeader';
 const data = ['1', '2','3', '4']
@@ -118,7 +118,7 @@ export class PersonalBest extends Component{
                    </View>
                    
                     {
-                        ii.log_details.map((_i,ind)=>{
+                     ii.log_details !== undefined ?   ii.log_details.map((_i,ind)=>{
                             return(
                                 <View style={{height:'auto', marginTop:5, marginBottom:5,backgroundColor:'#1F1F1F',alignItems:'center',justifyContent:'center', width:'90%',borderRadius:5, paddingVertical:10}}>
                                     <View style={{width:'90%', flexDirection:'row', justifyContent:'space-between', alignItems:'center', borderBottomColor:'rgba(255, 255, 255, 0.3)', borderBottomWidth:1.5}}>
@@ -127,7 +127,7 @@ export class PersonalBest extends Component{
                                            
                                         </Text>
                                         <Text style={styles.challenge_detail}>
-                                           {_i.exercise_date}
+                                           {_i.exercise_time}
                                         </Text>
                                     </View>
                                     {/* <View style={styles.seprator}>
@@ -160,7 +160,7 @@ export class PersonalBest extends Component{
                     </View>
                             )
                         })
-                    }
+                    :null}
                 {/* </View> */}
                   
             </View>
@@ -168,7 +168,7 @@ export class PersonalBest extends Component{
     }
     renderItem=(item)=>{
         const ii = item.item
-       // console.log('iiii',ii)
+        console.log('iiii',ii)
         return(
             
              
@@ -352,7 +352,7 @@ export class PersonalBest extends Component{
              sub = this.props.sub_category;
         //console.log('sub cate in personal', this.props.sub_category)
         }
-        console.log('props in personal berst screen ',this.props.personal_best)
+        console.log('props in personal berst screen ',this.props.personal_best,this.props.personal_best_filter)
         return(
             <View style={styles.container}>
                 <CustomHeader title='Exercise Log' onback={this.back} onmodalbtn={this.openModal}/>
@@ -593,7 +593,7 @@ export class PersonalBest extends Component{
                 <FlatList
                   data={this.props.personal_best}
                   //keyExtractor={(item,index)=>item.id.toString()}
-                  renderItem={this.state.filterData ? this.renderItem : this.renderDateData}
+                  renderItem={this.renderDateData}
                   ListEmptyComponent={this.emptyComponent}
                   refreshControl={
                     <RefreshControl
@@ -618,8 +618,8 @@ const mapStateToProps = state => {
     const {count} = state.count
     const {hisoryChallenges}= state.challenge
     const {fitLoading, sub_category,image_url,main_category} = state.fitness
-    const {personal_best,profileLoading} = state.profile
-   return {user,isLoggedIn ,count,JWT_Token,hisoryChallenges,fitLoading,sub_category,image_url,main_category,personal_best,profileLoading}
+    const {personal_best,profileLoading,personal_best_filter} = state.profile
+   return {user,isLoggedIn ,count,JWT_Token,hisoryChallenges,fitLoading,sub_category,image_url,main_category,personal_best,profileLoading,personal_best_filter}
 }
 
 const mapDispatchToProps = {
@@ -628,7 +628,7 @@ const mapDispatchToProps = {
     dispatchgetSubcategory: (id) => getSubcategory(id),
     dispatchgetPersonalBest:(jwt)=>getPersonalBest(jwt),
     dispatchsetSubcategoryNull: () => setSubcategoryNull(),
-    dispatchgetPersonalByFilter:(data,jwt) => getPersonalByFilter(data,jwt)
+    dispatchgetPersonalByFilter:(data,jwt) => getPersonalBestNewFilter(data,jwt)
  // dispatchgetRefreshToken:(jwt)=>getRefreshtoken(jwt)
 }
 
@@ -831,6 +831,7 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
         fontWeight: '500',
         fontSize: 14,
+        flex:0.8,
         lineHeight: 17,
         color: '#FFFFFF',
         fontFamily:'Montserrat-Regular',

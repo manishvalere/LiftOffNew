@@ -219,7 +219,7 @@ export class LoginScreen extends Component{
                    
                    {/* {this.state.passwordError && <Text style={styles.error}>{this.state.passwordError}</Text>} */}
                    <View  style={styles.forgot_text_block}>
-                <View style={{flex:0.5,flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}> 
+                <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', flex:0.7}}> 
                 <Switch
                  trackColor={{ false: "#ADF350", true: "#ADF350" }}
                  thumbColor={this.state.rememberMe ? "#1F1F1F" : "#f4f3f4"}

@@ -198,6 +198,7 @@ export  class Create_Challenge extends Component{
                     main_name:null,
                     isEnabled: false ,
                     challengeError:'',
+                    mainchallengeError:'',
                     setsError:'',
                     repsError:'',
                     weightError:'',
@@ -356,6 +357,7 @@ export  class Create_Challenge extends Component{
       }
       validate=()=>{
         let challengeError = "";
+        let mainchallengeError = "";
         let distanceError = "";
         let minuteError = "";
         let caloryError = "";
@@ -364,6 +366,9 @@ export  class Create_Challenge extends Component{
         let durationError = "";
 
         if(this.state.category_id == '7'){
+            if(this.state.main_name == null){
+                mainchallengeError='Please select any category!'
+            }
             if(this.state.challenge == null){
                 challengeError='Please select any challenge!'
             }
@@ -380,6 +385,9 @@ export  class Create_Challenge extends Component{
                 durationError="Please enter duration!"
             }
         }else{
+            if(this.state.main_name == null){
+                mainchallengeError='Please select any category!'
+            }
             if(this.state.challenge == null){
                 challengeError='Please select any challenge!'
             }
@@ -393,8 +401,8 @@ export  class Create_Challenge extends Component{
                 durationError="Please enter duration!"
             }
         }
-        if(challengeError || distanceError || minuteError || caloryError || setsError || repsError || durationError){
-            this.setState({challengeError, distanceError,minuteError,caloryError,setsError,repsError,durationError});
+        if(mainchallengeError || challengeError || distanceError || minuteError || caloryError || setsError || repsError || durationError){
+            this.setState({challengeError, distanceError,minuteError,caloryError,setsError,repsError,durationError, mainchallengeError});
             return false;
         }
         return true;
@@ -470,7 +478,7 @@ export  class Create_Challenge extends Component{
                     <>
                     <Challenge_picker placeholder='Please select workout' main={true} data={main} color='white' value={this.state.category_id} onValueChange={this.onChallengeChange} {...this.state} width='80%'/>
                     <View style={{background:'#363636', borderTopWidth:1,borderTopColor:' rgba(255, 255, 255, 0.3)', height:60, }}>
-                        
+                    <Text style={styles.error}>{this.state.mainchallengeError}</Text>
                     </View>
                     </> : null}
                     

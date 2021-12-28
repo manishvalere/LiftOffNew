@@ -46,29 +46,32 @@ export  class Invite extends Component{
     
     componentDidUpdate(prevProps){
         if(this.props.userList !== prevProps.userList){
-            let contact_ =this.state.contact;
+            let contact =this.state.contact;
             let users = this.props.userList;
            
-            let result = contact_.filter(o1 => {
+            let result = contact.filter(o1 => {
              
-             
+             var flag=0;
               users.forEach((s) => {
-                  
+                  console.log('numbr and phone', o1.number, s.phone_number)
                   if (o1.number == s.phone_number) {
 
-                      o1.connected = true
+                     
+                      flag=1;
                       
-
+                      
                       }
-                  else {
-
-                    o1.connected = false
-                    
-                  }
+                  
               })
-            return contact_;  
+              if(flag==1)
+              {
+                o1.connected = true;
+              }else{
+                o1.connected = false;
+              }
+            return contact;  
           });
-            //    console.log('contacttcctc', result)
+                console.log('contacttcctc', result)
               this.setState({
                 contact_:result
               })
@@ -147,7 +150,7 @@ export  class Invite extends Component{
         
        };
     render(){
-        // /console.log('contact',this.state.contact, this.props.userList)
+        console.log('contact',this.state.contact_,)
         return(
             <View style={styles.container}>
                 
@@ -155,7 +158,7 @@ export  class Invite extends Component{
                     <FlatList
                       data={this.state.contact_}
                       renderItem={this.renderItem}
-                    //    keyExtractor={(index)=>index}
+                        keyExtractor={(item,index)=>item.recordID}
                       showsVerticalScrollIndicator={false}
                       ListEmptyComponent={this.emptycomp}
                       refreshControl={

@@ -41,7 +41,7 @@ export  class Connected_ extends Component{
         return(
             <View
             style={styles.emptyblock}>
-           <Text style={styles.name_text}>No Joined Friends</Text>
+           <Text style={styles.name_text}>No Connected Friends</Text>
         </View>
         )
     }

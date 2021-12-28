@@ -244,6 +244,7 @@ export class SettingScreen extends Component{
         const  url_base =colors.baseURL+'auth/'
        // console.log('switch', this.state.isEnabled)
         return(
+            <ScrollView>
             <View style={styles.container}>
                 
                 <Text style={styles.text}>Account Settings</Text>
@@ -342,6 +343,7 @@ export class SettingScreen extends Component{
                     
                 </View>
             </View>
+            </ScrollView>
         )                
     }
     }
@@ -366,7 +368,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(SettingScreen)
 
 const styles = StyleSheet.create({
     container:{
-        flex:1,
+        //flex:1,
         justifyContent:'flex-start',
         //alignItems:'center', 
         marginBottom:83,

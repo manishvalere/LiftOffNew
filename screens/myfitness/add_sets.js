@@ -486,7 +486,7 @@ export class Add_sets extends Component{
        // console.log('video error:', error);
       }
     render(){
-       // console.log('reps_option', this.state.weight_option)
+        console.log('reps_option', this.props.personal_record)
         var detail = '';
         var url='';
         var uri='';
@@ -506,7 +506,7 @@ export class Add_sets extends Component{
             video_uri = url+'/'+detail.subcategory_video
         }
         
-        console.log('this form',this.props.personal_best)
+        console.log('this form',this.props.personal_best_filter)
         
         return(
             // <SafeAreaView style={{flex:1}}>
@@ -618,7 +618,7 @@ export class Add_sets extends Component{
                         <Compete_Head onPress={()=>this.props.navigation.navigate('personal_best',{cat_id:this.state.category_id,sub_id:this.state.id, specific:true})} title='Exercise Log'/>
                         </View>
                         <View style={{justifyContent:'center', alignItems:'center'}}>
-                        { this.props.personal_best != null && this.props.personal_best.length >  0  ? <PersonalBest_Comp data = {this.props.personal_best}/> : null}
+                        { this.props.personal_best_filter != null && this.props.personal_best_filter.length >  0  ? <PersonalBest_Comp data = {this.props.personal_best_filter}/> : null}
                         </View>
                     </View>
                 </View>
@@ -631,8 +631,8 @@ export class Add_sets extends Component{
 const mapStateToProps = state => {
     const {JWT_Token} = state.auth
     const {fitLoading, sub_category_detail,image_url,personal_record,addfitness,token_expire,record_added} = state.fitness
-    const {personal_best} = state.profile
-   return { JWT_Token,fitLoading, sub_category_detail,image_url,personal_record,addfitness,token_expire,record_added,personal_best}
+    const {personal_best_filter} = state.profile
+   return { JWT_Token,fitLoading, sub_category_detail,image_url,personal_record,addfitness,token_expire,record_added,personal_best_filter}
   }
   const mapDispatchToProps = {
     dispatchgetFitnessRecord: (id) => getFitnessRecord(id),

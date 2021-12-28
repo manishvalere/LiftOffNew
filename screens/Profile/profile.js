@@ -12,6 +12,7 @@ import {showImagePicker,launchCamera,launchImageLibrary} from "react-native-imag
 import { setProfileImage ,getHistoryChallenge,getPersonalBest,getCompleteChallenges, getGymPartner} from '../../actions';
 import {Toast, Root} from 'native-base';
 const windowWidth = Dimensions.get('window').width;
+const windowHieght = Dimensions.get('window').height;
 export class ProfileScreen extends Component{
     constructor(props) {
         super(props)
@@ -181,7 +182,7 @@ export class ProfileScreen extends Component{
                                     <Text style={styles.name}>{user.first_name} {user.last_name}</Text>
                                 </View>
                                 <View style={styles.three_block}>
-                                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Friend')} style={{backgroundColor:'#ADF350',alignItems:'center', paddingHorizontal:10,paddingVertical:5, borderRadius:6}}>
+                                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Friend')} style={{backgroundColor:'#ADF350',justifyContent:'center',alignItems:'center',  width:windowWidth *(25/100), borderRadius:6}}>
                                     <Text style={styles.number}>
                                         {this.props.gym_partner.gym_partner}
                                     </Text>
@@ -190,7 +191,7 @@ export class ProfileScreen extends Component{
                                     </Text>
                                 </TouchableOpacity>
                                 {/* <View style={styles.horizontal}></View> */}
-                                <TouchableOpacity style={{backgroundColor:'#ADF350',alignItems:'center', paddingHorizontal:10,paddingVertical:5, borderRadius:6}}>
+                                <TouchableOpacity style={{backgroundColor:'#ADF350',alignItems:'center',justifyContent:'center', width:windowWidth *(35/100), borderRadius:6}}>
                                     <Text style={styles.number}>
                                        {this.props.gym_partner.created_challenge}
                                     </Text>

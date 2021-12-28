@@ -203,7 +203,7 @@ export function getMaincategory(token){
       })
   
       .then((response) => {
-      //console.log('response in ADD SETS', response.data)
+      console.log('response in ADD SETS', response.data)
         if(response.data.status == 200) {
           
           dispatch({ type: GETLIST + '_SUCCESS', payload: response.data.data[0] })
@@ -227,7 +227,7 @@ export function getMaincategory(token){
         // if(error) {
         //   dispatch({ type: GETLIST + '_FAILUARE', payload: error})
         // }
-        // // console.log('error in catch list',error);
+         console.log('error in catch list',error);
         //  dispatch({ type: GETLIST + '_FAILUARE', payload: error})
 
       });
