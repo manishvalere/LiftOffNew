@@ -22,7 +22,11 @@ export  class Invite extends Component{
         super(props);
         this.state={
             contact:[],
-            contact_:[]
+            contact_:[], 
+            contacts:[],
+            search_result:[],
+
+            
         }
     }
     renderItem=(item)=>{
@@ -39,7 +43,7 @@ export  class Invite extends Component{
         return(
             <View
             style={styles.emptyblock}>
-           <Text style={styles.name_text}>No Joined Friends</Text>
+           <Text style={styles.name_text}>No Contacts Found</Text>
            </View>
         )
     }
@@ -114,49 +118,155 @@ export  class Invite extends Component{
         this.loadContacts();
       }
     }
-    loadContacts = () => {
-        console.log('load contact is calling')
-         Contacts.getAll((err, contacts) => {
-          // console.log('err',err, contacts)
-             contacts.sort(
-               (a, b) => 
-                 a.givenName.toLowerCase() > b.givenName.toLowerCase(),
-             );
-             var states=contacts.filter((e)=> { return e.phoneNumbers.length > 0})
-             if (err === 'denied') {
-               alert('Permission to access contacts was denied');
-             //  console.warn('Permission to access contacts was denied');
-             } else {
-            //    this.setState({
-            //        contacts:states
-            //    })
-            for(let i=0; i<states.length; i++){
+    // loadContacts = () => {
+    //     console.log('load contact is calling')
+    //      Contacts.getAll((err, contacts) => {
+    //       // console.log('err',err, contacts)
+    //          contacts.sort(
+    //            (a, b) => 
+    //              a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+    //          );
+    //          var states=contacts.filter((e)=> { return e.phoneNumbers.length > 0})
+    //          if (err === 'denied') {
+    //            alert('Permission to access contacts was denied');
+    //          //  console.warn('Permission to access contacts was denied');
+    //          } else {
+    //         //    this.setState({
+    //         //        contacts:states
+    //         //    })
+    //         for(let i=0; i<states.length; i++){
+    //             let num =   states[i].phoneNumbers[0].number
+    //           //  console.log('num',num)
+    //           var  new_num  = num.replace(/([-*?^=!:${}()|\[\]\/\\])/g, "");
+    //           var  new_space_num = new_num.replace(/ /g, "")
+    //             states[i].phoneNumbers[0].number = new_space_num;
+    //             //new_space_num = parseInt(new_space_num)
+    //             // let new_str = new_space_num.slice(new_space_num.length - 10);
+                
+    //             states[i].number = new_space_num;
+    //             }
+    //             this.setState({
+    //                 contact:states
+    //             }) 
+              
+    //          }
+    //        });
+        
+    //    };
+
+
+    loadContacts = async() => {
+      // console.log('load contact is calling')
+        Contacts.getAll((err, contacts) => {
+         // console.log('err',err)
+            contacts.sort(
+              (a, b) => 
+                a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+            );
+            var states=contacts.filter((e)=> { return e.phoneNumbers.length > 0})
+            if (err === 'denied') {
+              alert('Permission to access contacts was denied');
+              //console.warn('Permission to access contacts was denied');
+            } else {
+              for(let i=0; i<states.length; i++){
                 let num =   states[i].phoneNumbers[0].number
-              //  console.log('num',num)
+                //console.log('num',num)
               var  new_num  = num.replace(/([-*?^=!:${}()|\[\]\/\\])/g, "");
               var  new_space_num = new_num.replace(/ /g, "")
                 states[i].phoneNumbers[0].number = new_space_num;
                 //new_space_num = parseInt(new_space_num)
-                // let new_str = new_space_num.slice(new_space_num.length - 10);
-                
+                //console.log('newspace name', new_space_num)
+                let new_str = new_space_num.slice(new_space_num.length - 10);
                 states[i].number = new_space_num;
                 }
-                this.setState({
-                    contact:states
-                }) 
-              
-             }
-           });
-        
-       };
+              this.setState({
+                  contacts:states
+              })
+              if(this.state.contacts.length>0 && this.props.connectedFriend !== null&& this.props.connectedFriend != undefined){
+                var new_pending = this.props.connectedFriend
+           
+                for(let i=0;i<new_pending.length; i++){
+                    const str = new_pending[i].receiver_user_mob_no
+                   // const str = 'ECMAScript 2015'; 
+                   let new_str = str.slice(str.length - 10);
+                   new_pending[i].receiver_user_mob_no = new_str
+                }
+                      var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.receiver_user_mob_no))
+                    //  console.log('result in connected friebd', result);
+                      this.setState({
+                        connected_friend:result
+                      }) 
+                    }
+                  //console.log('contacts', this.state.contacts, this.state.connected_friend);
+                  }
+          });
+         
+          //let result = result1.filter(o1 => result2.some(o2 =>  o2.number === o1.receiver_user_mob_no))
+          // for(let i=0;i<result.length;i++){
+          //     for(let j=0;this.props.connectedFriend.length<0;j++){
+          //         if(result[i].number==this.props.connectedFriend[j].receiver_user_mob_no){
+          //             console.log('challehe is equzl',this.props.connectedFriend[j].challenge_id)
+          //             result[i].challenge_id = this.props.connectedFriend[j].challenge_id
+          //         }
+          //     }
+          //     console.log('result in', result[i].challenge_id)
+          // }
+          
+      };
+
+       search=(text)=>{
+        // console.log('handler change is calling ', text)
+         
+   // this.reset_filter()
+   if(text !== '' && text !== null){
+     if(text == ''){
+      // console.log('text value is blank')
+     }
+    // console.log('e target', this.state.contacts)
+     let val =text
+     let matches = this.state.contacts.filter(v => v.givenName.toUpperCase().includes(val.toUpperCase()) || v.familyName.toUpperCase().includes(val.toUpperCase()) || v.number.toString().includes(val) );
+    // console.log('match result', matches)
+     if(matches.length > 0 && matches !== undefined){
+       // this.setState({
+       //   serach_result:matches
+       // })
+       
+       this.state.search_result = matches;
+       //console.log('item in supplier filter',matches);
+       this.setState(prevState => ({
+         
+         search_result :matches
+       }))
+      
+     }
+   
+   
+   }else{
+     //console.log('target value null ', )
+    this.setState({
+      search_result:[],
+      
+    })
+  
+ }
+     }
+
+       
     render(){
         console.log('contact',this.state.contact_,)
         return(
             <View style={styles.container}>
+
+              <View style={styles.invite_head_block}>
+                    {/* <Text style={styles.invite_head_text}>Invite to create a Lift Off account</Text> */}
+                    <Search_Box onChangeText={this.search} width='100%' placeholder='Find Your friend'/>
+                </View>
                 
                 <View style={{flex:1}}>
                     <FlatList
-                      data={this.state.contact_}
+                      // data={this.state.contact_}
+                                            data={this.state.search_result.length> 0 ? this.state.search_result : this.state.contacts}
+
                       renderItem={this.renderItem}
                         keyExtractor={(item,index)=>item.recordID}
                       showsVerticalScrollIndicator={false}
