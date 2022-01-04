@@ -19,7 +19,7 @@ import Compete_Head from '../../components/compet_head';
 import ScrollChallenge from '../../components/ScrollChallenge';
 import PersonalBest_Comp from '../../components/personal_best_comp';
 import KeepAwake from 'react-native-keep-awake';
-
+import TimePicker from "react-native-24h-timepicker";
 
 export class Add_sets extends Component{
     constructor(props){
@@ -38,11 +38,21 @@ export class Add_sets extends Component{
             second:'',
             reps_option:[],
             weight_option:[], 
-            swr:''
+            swr:'',
+            time: "HH:MM"
 
         }
         this.ChildElement = React.createRef();
     }
+    onCancel() {
+        this.TimePicker.close();
+      }
+    
+      onConfirm(hour, minute) {
+        //this.setState({ time: `${hour}:${minute}` });
+        this.TimePicker.close();
+        this.changeobject(`${hour}:${minute}`, 'Minute')
+      }
     componentDidUpdate(prevProps){
        // console.log(' CDU is calling ', this.props.token_expire)
         if(prevProps.record_added !== this.props.record_added){
@@ -243,29 +253,24 @@ export class Add_sets extends Component{
             case 'Weight':
                 form_new[i].Weight = text;
                 break;
-            case 'Minute':
-                if (text.length === 2) {
-                    this.secondTextInput.focus();
-                    form_new[i].Seconds = '00';
-                    
-                    
-                  }
-                form_new[i].Minute = text;
-                break;
-            case 'Seconds':
-                //console.log('form_new[i].seconds',form_new[i].Seconds )
-                var isValid = /^([0-5][0-9])(:[0-5][0-9])?$/.test(text);
-                if(isValid){
-                    form_new[i].Seconds = text;
-                   // console.log('form_new[i].seconds',form_new[i].Seconds );
-                    this.setState({
-                        error:''
-                    })
-                }else{
-                    this.setState({
-                        error:'Please enter valid time format!'
-                    })
-                }
+             case 'Minute':
+                
+             form_new[i].Minute = text;
+            //     break;
+            // case 'Seconds':
+            //     //console.log('form_new[i].seconds',form_new[i].Seconds )
+            //     var isValid = /^([0-5][0-9])(:[0-5][0-9])?$/.test(text);
+            //     if(isValid){
+            //         form_new[i].Seconds = text;
+            //        // console.log('form_new[i].seconds',form_new[i].Seconds );
+            //         this.setState({
+            //             error:''
+            //         })
+            //     }else{
+            //         this.setState({
+            //             error:'Please enter valid time format!'
+            //         })
+            //     }
                 // if(text.valueOf() == 59){
                 //     form_new[i].Seconds = text;
                 // }else if(text.valueOf() > 59){
@@ -343,8 +348,8 @@ export class Add_sets extends Component{
                 //<TextInput editable={false} returnKeyType='done' value={str_reps} maxLength={3} onFocus={this.errordisable} keyboardType='numeric' onChangeText={(text)=>this.changeobject(text, 'Reps')}  placeholderTextColor='#FFFFFF'  style={styles.table_content_text} placeholder= 'Reps'/>  
             // </View> 
             :
-             <View  style={styles.table_content_time}>
-             <TextInput 
+             <TouchableOpacity  onPress={() => this.TimePicker.open()}  style={styles.table_content_time}>
+             {/* <TextInput 
              onFocus={this.errordisable} 
              keyboardType='numeric' 
              onChangeText={(text)=>this.changeobject(text, 'Minute')}  
@@ -366,9 +371,24 @@ export class Add_sets extends Component{
              placeholder= {this.state.form[index].Seconds}
              returnKeyType='done'
              maxLength={2}
-             />
-             
-             </View>}
+             /> */}
+              <TouchableOpacity
+          onPress={() => this.TimePicker.open()}
+          style={styles.table_content_text1}
+        >
+          <Text style={styles.table_content_text1}>{this.state.form[index].Minute}</Text>
+        </TouchableOpacity>
+              <TimePicker
+          ref={ref => {
+            this.TimePicker = ref;
+          }}
+          value={this.state.form[index].Minute}
+          maxHour={100}
+          onCancel={() => this.onCancel()}
+          onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
+        />
+             </TouchableOpacity>
+             }
             
                 {this.state.category_type !== 7? 
                 this.state.swr == 'Disable' ? null : 
@@ -407,7 +427,7 @@ export class Add_sets extends Component{
                 )
             }else{
                 return(
-                    <Text key={item.index} style={styles.persnal_text}>{item.item.Distance} Miles  | {item.item.Minute} : {item.item.Seconds} Hour | {item.item.Calories} Calories</Text>
+                    <Text key={item.index} style={styles.persnal_text}>{item.item.Distance} Miles  | {item.item.Minute} Hour | {item.item.Calories} Calories</Text>
                 )
             }
     
@@ -442,7 +462,7 @@ export class Add_sets extends Component{
                       count:this.state.count+1
                     };
                   });
-                  this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } :{Minute:'', Seconds:'',Calories:'',Distance:'' });
+                  this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } :{Minute:'HH:MM', Seconds:'',Calories:'',Distance:'' });
             }else{
                 this.setState({
                     error:'Please fill all the field!'
@@ -458,7 +478,7 @@ export class Add_sets extends Component{
                       count:this.state.count+1
                     };
                   });
-                  this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } : {Minute:'', Seconds:'MM',Calories:'',Distance:'' });
+                  this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } : {Minute:'HH:MM', Seconds:'MM',Calories:'',Distance:'' });
             }else{
                 this.setState({
                     error:'Please fill all the field!'
@@ -475,7 +495,7 @@ export class Add_sets extends Component{
               count:this.state.count+1
             };
           });
-          this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } :  {Minute:'', Seconds:'MM',Calories:'',Distance:'' });
+          this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } :  {Minute:'HH:MM', Seconds:'MM',Calories:'',Distance:'' });
       }}
     }
       onBuffer(bufferObj) {

@@ -19,6 +19,7 @@ import Date_picker_Native from '../../components/native_date_picker';
 import DatePicker from 'react-native-date-ranges';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
+import TimePicker from "react-native-24h-timepicker";
 const days = [
     {
         'days':'1 Day',
@@ -110,7 +111,7 @@ export  class Create_Challenge extends Component{
           calories:null,
           duration:null,
           category_id:'',
-          minute:null,
+          minute:'HH:MM',
           second:null,
           main_name:null,
           isEnabled: false ,
@@ -127,7 +128,14 @@ export  class Create_Challenge extends Component{
         };
         this.ChildElement = React.createRef();
       }
-     
+      onCancel() {
+        this.TimePicker.close();
+      }
+    
+      onConfirm(hour, minute) {
+        this.setState({ minute: `${hour}:${minute}` });
+        this.TimePicker.close();
+      }
     setRepsOption=()=>{
         const reps_op = [];
         for(i=1;i<=100;i++){
@@ -340,7 +348,7 @@ export  class Create_Challenge extends Component{
         if(this.validate()){
         //this.props.navigation.navigate('challenge_created')
         var description_all={sets:this.state.sets,reps:this.state.reps, duration:this.state.duration};
-        var description_cardio={distance:this.state.distance, time:this.state.minute+':'+this.state.second, duration:this.state.duration};
+        var description_cardio={distance:this.state.distance, time:this.state.minute, duration:this.state.duration};
 
         //const childelement = this.ChildElement.current;
         // const date = childelement.state.date
@@ -375,12 +383,10 @@ export  class Create_Challenge extends Component{
             if(this.state.distance == null){
                 distanceError="Please enter distance!"
             }
-            if(this.state.minute == null){
-                minuteError="Please enter time!"
+            if(this.state.minute == null || this.state.minute == 'HH:MM'){
+                minuteError="Please select time!"
             }
-            if(this.state.second == null){
-                minuteError="Please enter time!"
-            }
+           
             if(this.state.duration == null){
                 durationError="Please enter duration!"
             }
@@ -653,8 +659,23 @@ export  class Create_Challenge extends Component{
                     <View style={{height:60,width:'100%', flexDirection:'row',justifyContent:'space-between', marginBottom:10}}>
                             <View style={{width:'50%'}}>
                             {this.state.category_id == '7' ?  
-                            <Item style={styles.item} >
-                            <TextInput 
+                            <Item  onPress={() => this.TimePicker.open()} style={styles.item} >
+                                <TouchableOpacity
+                                onPress={() => this.TimePicker.open()}
+                                style={styles.input_2}
+                                >
+                                <Text style={styles.minute}>{this.state.minute}</Text>
+                                </TouchableOpacity>
+                                    <TimePicker
+                                ref={ref => {
+                                    this.TimePicker = ref;
+                                }}
+                                value={this.state.minute}
+                                maxHour={100}
+                                onCancel={() => this.onCancel()}
+                                onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
+                                />
+                            {/* <TextInput 
                            placeholder='HH'
                            placeholderTextColor='#FFFFFF'
                            value={this.state.minute}
@@ -686,7 +707,7 @@ export  class Create_Challenge extends Component{
                             style={styles.input_1}
                             //defaultValue={this.state.second}
                             onFocus={()=>{this.setErrorNull, this.setmm()}}
-                            />
+                            /> */}
                         </Item>
                            :
                             // <InputText  
@@ -898,6 +919,35 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start',
         alignItems:'center',
         textAlign:'left'
+       // width:'100%'
+    },
+    input_2:{
+        fontSize:16,
+        //lineHeight:50,
+        fontWeight:'300',
+        color:'#FFFFFF',
+        //width:'20%',
+        //backgroundColor:'yellow',
+        //height:60,
+        justifyContent:'center',
+        alignItems:'center',
+        textAlign:'left'
+       // width:'100%'
+    },
+    minute:{
+        fontSize:16,
+        display:'flex',
+        //lineHeight:20,
+        fontWeight:'300',
+        color:'#FFFFFF',
+        //width:'20%',
+      //  backgroundColor:'yellow',
+        // /height:60,
+        justifyContent:'center',
+        alignItems:'center',
+        textAlign:'left',
+        marginLeft:10
+        
        // width:'100%'
     },
     item:{
