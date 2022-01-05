@@ -50,14 +50,14 @@ export  class Invite extends Component{
     
     componentDidUpdate(prevProps){
         if(this.props.userList !== prevProps.userList){
-            let contact =this.state.contact;
+            let contacts =this.state.contacts;
             let users = this.props.userList;
            
-            let result = contact.filter(o1 => {
+            let result = contacts.filter(o1 => {
              
              var flag=0;
               users.forEach((s) => {
-                  console.log('numbr and phone', o1.number, s.phone_number)
+                  //console.log('numbr and phone', o1.number, s.phone_number)
                   if (o1.number == s.phone_number) {
 
                      
@@ -73,9 +73,9 @@ export  class Invite extends Component{
               }else{
                 o1.connected = false;
               }
-            return contact;  
+            return contacts;  
           });
-                console.log('contacttcctc', result)
+                //console.log('contacttcctc', result)
               this.setState({
                 contact_:result
               })
