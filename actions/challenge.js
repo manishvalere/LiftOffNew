@@ -434,7 +434,7 @@ export function createChallenge(id,type, description,jwt,date,SWR){
   }
   export function getConnectedFriend_(jwt){
    
-  //  console.log('connected friend is calling ')
+    console.log('connected friend is calling ')
     return (dispatch, getState) => {
       dispatch({ type: GET_CONNECTED_FRIEND });
       axios({
@@ -482,12 +482,12 @@ export function createChallenge(id,type, description,jwt,date,SWR){
   }
   export function getConnectedFriend(jwt){
    
-    //  console.log('connected friend is calling ')
+      console.log('connected friend is calling ')
       return (dispatch, getState) => {
         dispatch({ type: GET_CONNECTED_FRIEND });
         axios({
           method: 'POST',
-          url: color.baseURL + 'auth/connected-friends',
+          url: color.baseURL + 'auth/connected_friend_connection',
          headers: getHeaders(jwt),
           // data: {
           //   challenge_id:id,

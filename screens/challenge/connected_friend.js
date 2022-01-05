@@ -103,14 +103,14 @@ export  class Connected_Friend extends Component{
             var new_pending = this.props.connectedFriend
  
       for(let i=0;i<new_pending.length; i++){
-          const str = new_pending[i].receiver_user_mob_no
+          const str = new_pending[i].phone_number
          // const str = 'ECMAScript 2015'; 
         // let new_str = str.slice(str.length - 10);
-         new_pending[i].receiver_user_mob_no = str
+         new_pending[i].phone_number = str
          //console.log('str cdu', str)
       }
      // console.log('new paending, ', new_pending)
-            var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.receiver_user_mob_no))
+            var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.phone_number))
             //console.log('result in connected friebd in cdu', result);
             this.setState({
               connected_friend:result
@@ -191,13 +191,13 @@ export  class Connected_Friend extends Component{
                       var new_pending = this.props.connectedFriend
            
                 for(let i=0;i<new_pending.length; i++){
-                    const str = new_pending[i].receiver_user_mob_no
+                    const str = new_pending[i].phone_number
                    // const str = 'ECMAScript 2015'; 
                    //let new_str = str.slice(str.length - 10);
                    //console.log('str str', str)
-                   new_pending[i].receiver_user_mob_no = str
+                   new_pending[i].phone_number = str
                 }
-                      var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.receiver_user_mob_no))
+                      var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.phone_number))
                       //console.log('result in connected friebd', result);
                       this.setState({
                         connected_friend:result
@@ -207,10 +207,10 @@ export  class Connected_Friend extends Component{
                   }
                 });
                
-                //let result = result1.filter(o1 => result2.some(o2 =>  o2.number === o1.receiver_user_mob_no))
+                //let result = result1.filter(o1 => result2.some(o2 =>  o2.number === o1.phone_number))
                 // for(let i=0;i<result.length;i++){
                 //     for(let j=0;this.props.connectedFriend.length<0;j++){
-                //         if(result[i].number==this.props.connectedFriend[j].receiver_user_mob_no){
+                //         if(result[i].number==this.props.connectedFriend[j].phone_number){
                 //             console.log('challehe is equzl',this.props.connectedFriend[j].challenge_id)
                 //             result[i].challenge_id = this.props.connectedFriend[j].challenge_id
                 //         }
