@@ -5,6 +5,6 @@ const secondaryColor = '#E89257';
 export default {
   primary: primaryColor,
   secondary: secondaryColor,
-   baseURL:'http://165.22.223.163/liftoff/api/'
-  //baseURL: 'http://3.136.38.75/liftoff_backend/api/'
+   //baseURL:'http://165.22.223.163/liftoff/api/'
+  baseURL: 'http://3.136.38.75/liftoff_backend/api/'
 };
