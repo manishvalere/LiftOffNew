@@ -11,7 +11,7 @@ const data = ['1', '2', '3'];
 //  const data = []
 import ConnectInvite from '../../components/Connect_invite';
 import AcceptDeny from '../../components/accept_deny';
-import { actionOnRequest, getFriendRequest } from '../../actions';
+import { actionOnRequest, getFriendRequest,getConnectedFriend_ } from '../../actions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import {Toast, Root} from 'native-base';
@@ -85,6 +85,7 @@ export class Friend_Home extends Component{
         if(this.props.message !== prevProps.message){
             if(!this.props.friendLoading){
                 this.props.dispatchgetFriendRequest(this.props.JWT_Token);
+                this.props.dispatchgetConnectedFriend(this.props.JWT_Token)
                 return Toast.show({
                     text: this.props.message,
                     textStyle: { color: "green" },
@@ -179,7 +180,8 @@ const mapStateToProps = state => {
   const mapDispatchToProps = {
     
     dispatchgetFriendRequest:(jwt)=>getFriendRequest(jwt),
-    dispatchActionOnRequest:(type,jwt,id)=>actionOnRequest(type,jwt,id)
+    dispatchActionOnRequest:(type,jwt,id)=>actionOnRequest(type,jwt,id),
+    dispatchgetConnectedFriend:(jwt)=>getConnectedFriend_(jwt)
    }
   export default connect(mapStateToProps, mapDispatchToProps)(Friend_Home)
 

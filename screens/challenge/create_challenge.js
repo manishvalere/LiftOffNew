@@ -190,9 +190,14 @@ export  class Create_Challenge extends Component{
                       exercise_date:this.state.date,
                       detail:this.state.category_id == '7' ? description_cardio : description_all,
                   });
+                  var today = new Date();
+                  var dd = String(today.getDate()).padStart(2, '0');
+                  var mm = today.getMonth()+1 //January is 0!
+                  var yyyy = today.getFullYear();
+                  today = mm + '/' + dd + '/' + yyyy;
                   this.setState({
                     challenge: null,
-                    date:'',
+                    date:today,
                     sets:null,
                     reps:null,
                     weight:null,
@@ -259,19 +264,19 @@ export  class Create_Challenge extends Component{
         //  console.log('get subcategoty on select is calling')
         this.props.dispatchgetSubcategory(id)
       }
-      onDateChange=(value)=> {
-        this.setState({
-            date: value
-        });
-      }
-       onDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || this.state.date
-        //setShow(Platform.OS === 'ios');
-        //setDate(currentDate);
-        this.setState({
-            date: currentDate
-        });
-      };
+    //   onDateChange=(value)=> {
+    //     this.setState({
+    //         date: value
+    //     });
+    //   }
+    //    onDateChange = (event, selectedDate) => {
+    //     const currentDate = selectedDate || this.state.date
+    //     //setShow(Platform.OS === 'ios');
+    //     //setDate(currentDate);
+    //     this.setState({
+    //         date: currentDate
+    //     });
+    //   };
       onSetsChange=(value)=> {
         this.setState({
             sets: value
@@ -434,7 +439,7 @@ export  class Create_Challenge extends Component{
         // })
     }
     render(){
-        
+        console.log('date', this.state.date)
         const placeholder = {
             label: 'Reps',
             value: null,
@@ -604,7 +609,7 @@ export  class Create_Challenge extends Component{
                         blockBefore={true}
                         allowFontScaling = {true} // optional
                         placeholder={this.state.date}
-                        onConfirm={text=>this.setState({date:text})}
+                        onConfirm={text=>this.setState({date:text.currentDate})}
                         mode={this.state.value}
                         customButton = {this.customButton}
                         markText='Range'

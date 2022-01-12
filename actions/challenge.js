@@ -4,7 +4,7 @@ import { getHeaders, getRefreshtoken, login, logout } from './authantication';
 import axios from 'axios';
 import   {CREATE_CHALLENGE,TOKENEXPIRE,GET_CURRENT_CHALLENGE,INVITE,GET_PENDING_CHALLENGE,GET_HISTORY_CHALLENGE,SET_DENY,SET_ACCEPT,GET_CONNECTED_FRIEND,GET_JOINED_FRIEND,GET_PENDING_FRIEND,ADDCOMPLETE_RECORD, SET_CHALLENGEID,RESEND_REQUEST,SET_CONTACT,GETSUBCATE_OBJ,GET_CHALLENGE_DETAIL} from '../constant';
 export function createChallenge(id,type, description,jwt,date,SWR){
-   // console.log('create challenge', SWR)
+    console.log('create challenge', id,type, description,jwt,date,SWR)
     return (dispatch, getState) => {
       dispatch({ type: CREATE_CHALLENGE });
       axios({
@@ -21,7 +21,7 @@ export function createChallenge(id,type, description,jwt,date,SWR){
       })
   
       .then((response) => {
-     // console.log('response in at the time od sub', response.data)
+      console.log('response in at the time od sub', response.data)
         if(response.data.status == 200) {
         // console.log('action in if of 200')
           dispatch({ type: CREATE_CHALLENGE + '_SUCCESS', payload: response.data.data, image_url:response.data.url })
@@ -50,7 +50,7 @@ export function createChallenge(id,type, description,jwt,date,SWR){
         if(error) {
           dispatch({ type: CREATE_CHALLENGE + '_FAILUARE', payload: error})
         }
-       // console.log('error in catch',error);
+        console.log('error in catch',error);
         dispatch({ type: CREATE_CHALLENGE + '_FAILUARE', payload: error})
       });
     }
