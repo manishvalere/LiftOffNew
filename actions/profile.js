@@ -110,7 +110,7 @@ export function getCompleteChallenges(jwt){
   }
   export function getPersonalBest(jwt){
    
-    console.log('log  details calling')
+    console.log('log  details calling', jwt)
     return (dispatch, getState) => {
       dispatch({ type:  GET_PERSONAL_BEST });
       axios({

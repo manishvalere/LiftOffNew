@@ -133,7 +133,8 @@ export class PersonalBest extends Component{
                                     {/* <View style={styles.seprator}>
 
                                     </View> */}
-                <View style={{width:'90%',alignItems:'flex-start',paddingVertical:5 }}>
+                <View style={{width:'90%',alignItems:'flex-start',flexDirection:'row', paddingVertical:5,justifyContent:'space-between'  }}>
+                <View style={{alignItems:'flex-start', paddingVertical:5  }}>
                     {
                        JSON.parse(_i.description).map((i, index)=>{
                      //  console.log('i.exercise_type',ii.exercise_type)
@@ -151,6 +152,11 @@ export class PersonalBest extends Component{
                         
                        })
                    }
+                   
+                   </View>
+                   <View>
+                  {_i.exercise_type == 'All' && _i.swr_status == true ?  <Text  style={styles.challenge_SWR}>SWR : {_i.swr_result}</Text>: null}
+                   </View>
                    </View>
                        {/* <FlatList
                        data={JSON.parse(i.description)}
@@ -846,6 +852,17 @@ const styles = StyleSheet.create({
         lineHeight: 15,
         color: 'rgba(255, 255, 255, 0.3)',
         marginVertical:3,
+        //marginLeft:25,
+        fontFamily:'Montserrat-Regular'
+    },
+    challenge_SWR:{
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: 12,
+        lineHeight: 15,
+        color: '#ADF350',
+        marginVertical:3,
+        opacity:0.7,
         //marginLeft:25,
         fontFamily:'Montserrat-Regular'
     },
