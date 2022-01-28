@@ -82,7 +82,7 @@ export  class OthersChallenge extends Component{
                         </View>
                         <View>
                             {i.exercise_type !== 'Cardio' ? <Text style={styles.challenge_detail}>{sets} Sets | {reps} Reps | {duration} Days</Text>:
-                            <Text style={styles.challenge_detail}>{distance} KM | {time} Hour | {duration} Days</Text>
+                            <Text style={styles.challenge_detail}>{distance} Miles | {time} Hour | {duration} Days</Text>
                             }
                             
                         </View>

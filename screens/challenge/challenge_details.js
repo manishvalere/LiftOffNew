@@ -32,7 +32,7 @@ export class Challenge_Detail extends Component{
         return(
             <View style={styles.detail_row}>
                 {this.state.category_type !== 'Cardio' ? <Text style={styles.text_description_2}>{ii.sets} Sets | {ii.reps} Reps {ii.weight !== undefined && ii.weight !== '' ? ('| '+ ii.weight +' Lbs Weight'): null}</Text>:
-                       <Text style={styles.text_description_2}>{ii.distance} KM | {time} Hours | {ii.calories} Calories</Text>
+                       <Text style={styles.text_description_2}>{ii.distance} Miles | {time} Hours | {ii.calories} Calories</Text>
                        }
             </View>
         )
@@ -135,7 +135,7 @@ export class Challenge_Detail extends Component{
                 <View style={styles.third_block}>
                     <View>
                      {desc_status !== "" ? i.exercise_type !== 'Cardio' ? <Text style={styles.text_description}>{sets} Sets | {reps} Reps </Text>:
-                       <Text style={styles.text_description}>{distance} KM | {time} Hours | {calories} Calories</Text>
+                       <Text style={styles.text_description}>{distance} Miles | {time} Hours | {calories} Calories</Text>
                        : <Text style={styles.text_description}>Not Completed</Text>} 
                     </View>
                     

@@ -49,6 +49,10 @@ export  class Invite extends Component{
     }
     
     componentDidUpdate(prevProps){
+      if(this.props.change !== prevProps.change){
+        console.log('this.calinng in didupdate')
+        this.props.dispatchgetUserList(this.props.JWT_Token);
+      }
         if(this.props.userList !== prevProps.userList){
             let contacts =this.state.contacts;
             let users = this.props.userList;
@@ -56,13 +60,19 @@ export  class Invite extends Component{
             let result = contacts.filter(o1 => {
              
              var flag=0;
+             var receiver_user_status = '';
+             var connection_type = '';
+             var user_conn_type = '';
               users.forEach((s) => {
                   //console.log('numbr and phone', o1.number, s.phone_number)
-                  if (o1.number == s.phone_number) {
+                  if (o1.number == s.user_phone) {
 
                      
                       flag=1;
-                      
+                      receiver_user_status = s.receiver_user_status;
+                      connection_type = s.connection_type;
+                      user_conn_type = s.user_conn_type
+
                       
                       }
                   
@@ -70,8 +80,14 @@ export  class Invite extends Component{
               if(flag==1)
               {
                 o1.connected = true;
+                o1.receiver_user_status = receiver_user_status;
+                o1.connection_type = connection_type;
+                o1.user_conn_type = user_conn_type;
               }else{
                 o1.connected = false;
+                o1.receiver_user_status = receiver_user_status;
+                o1.connection_type = connection_type;
+                o1.user_conn_type = user_conn_type;
               }
             return contacts;  
           });
@@ -292,9 +308,9 @@ export  class Invite extends Component{
 }
 const mapStateToProps = state => {
     const {JWT_Token} = state.auth
-    const {friendLoading,userList ,friendError,message} = state.friend
+    const {friendLoading,userList ,friendError,message, change} = state.friend
     
-    return { JWT_Token,friendLoading,userList,friendError,message }
+    return { JWT_Token,friendLoading,userList,friendError,message , change}
   
   }
   const mapDispatchToProps = {

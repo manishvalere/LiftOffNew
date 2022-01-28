@@ -107,7 +107,7 @@ export  class PendingChallenge extends Component{
                    </View>
                    <View>
                        {item.item.exercise_type ==  'All' ? <Text style={styles.challenge_detail}>{item.item.description.sets } Sets | {item.item.description.reps } Reps | {item.item.description.duration } Days</Text> : 
-                       <Text style={styles.challenge_detail}>{item.item.description.distance} KM | {item.item.description.time} Hour | {item.item.description.duration } Days</Text>
+                       <Text style={styles.challenge_detail}>{item.item.description.distance} Miles | {item.item.description.time} Hour | {item.item.description.duration } Days</Text>
                        }
                    </View>
                 </View>

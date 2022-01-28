@@ -35,6 +35,8 @@ export class MyFitnessHome extends Component{
             this.props.navigation.navigate('Compete',{screen: 'pending_challenge', param:{
                 title:'Pending Challenges'
             }})
+        }else if(remoteMessage.data.screen == 'friend'){
+            this.props.navigation.navigate('Friend');
         }else if(remoteMessage.data.screen == 'complete'){
             this.props.navigation.navigate('Compete',{screen: '', param:{
                 title:data_.title,

@@ -5,7 +5,8 @@ const initialState = {
     userList:[],
     friendError:null, 
     message:'',
-    friend_request:[]
+    friend_request:[], 
+    change:false
 }
 
 const friendReducer = (state = initialState, action)=>{
@@ -19,13 +20,13 @@ const friendReducer = (state = initialState, action)=>{
         case GET_USERLIST_FAILUARE:
             return {...state, friendLoading:false,userList:[],friendError:action.payload}
         case INVITE_USER:
-            return {...state, friendLoading:true,message:'',friendError:null}
+            return {...state, friendLoading:true,message:'',friendError:null,change:false}
 
         case INVITE_USER_SUCCESS:
-            return {...state, friendLoading:false,message:action.payload,friendError:null}
+            return {...state, friendLoading:false,message:action.payload,friendError:null,change:true}
         
         case INVITE_USER_FAILUARE:
-            return {...state, friendLoading:false,message:action.payload,friendError:action.payload}
+            return {...state, friendLoading:false,message:action.payload,friendError:action.payload,change:false}
         case GET_REQUEST:
             return {...state, friendLoading:true,message:'',friendError:null,friend_request:[]}
 

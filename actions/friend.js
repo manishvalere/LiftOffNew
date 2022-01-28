@@ -8,7 +8,8 @@ export function getUserList(jwt){
       dispatch({ type: GET_USERLIST });
       axios({
         method: 'POST',
-        url: colors.baseURL + 'auth/get-user-list',
+        // url: colors.baseURL + 'auth/get-user-list',
+        url: colors.baseURL + 'auth/get_user_connection_list',
         headers: getHeaders(jwt),
         // data: {
         //  token:token
@@ -16,7 +17,7 @@ export function getUserList(jwt){
       })
   
       .then((response) => {
-  console.log('response in user list', response.data)
+  //console.log('response in user list', response.data)
         if(response.data.status == 200) {
          // console.log('response in login', response.data)
           dispatch({ type: GET_USERLIST + '_SUCCESS', payload: response.data.data  })
@@ -50,7 +51,8 @@ export function getUserList(jwt){
     }
   }
   export function inviteUser(jwt,item){
-    console.log('getUserList action is calling action is calling')
+          
+    console.log('getUserList action is calling action is calling',item,item ? 'connect' : 'invite')
     return (dispatch, getState) => {
       dispatch({ type: INVITE_USER });
       axios({
@@ -59,12 +61,12 @@ export function getUserList(jwt){
         headers: getHeaders(jwt),
         data: {
           receiver_user_mob_no:item.number,
-          connection_type:!item.connect ? 'invite' : 'connect'
+          connection_type:item.connected ? 'connect' : 'invite'
         }
       })
   
       .then((response) => {
-  //console.log('response in user list',response.data.message)
+  console.log('response in user list',response.data.message)
         if(response.data.status == 200) {
          // console.log('response in login', response.data)
           dispatch({ type: INVITE_USER + '_SUCCESS', payload: response.data.message  })
@@ -92,13 +94,13 @@ export function getUserList(jwt){
         if(error) {
           dispatch({ type: INVITE_USER + '_FAILUARE', payload: error})
         }
-        console.log('error in catch',error);
+        console.log('error in catch invite',error);
         dispatch({ type: INVITE_USER + '_FAILUARE', payload: error})
       });
     }
   }
   export function getFriendRequest(jwt,item){
-    console.log('getUserList action is calling action is calling')
+    //console.log('getUserList action is calling action is calling')
     return (dispatch, getState) => {
       dispatch({ type: GET_REQUEST });
       axios({

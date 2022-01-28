@@ -9,7 +9,7 @@ export default class InviteFriend extends Component{
         const item = this.props.item 
         if(item !== null && item !== undefined){
 
-        //console.log('item in invite', item)
+        console.log('item in invite', item)
         return(
             <TouchableOpacity
                 style={styles.container}
@@ -24,19 +24,21 @@ export default class InviteFriend extends Component{
                         <Text style={styles.name_text}>{item.givenName} {item.middleName} {item.familyName}</Text>
                         <Text style={styles.phone}>{item.number}</Text>
                     </View>
-                    {item.connected ? <View style = {styles.icon_block}>
+                    {item.user_conn_type == 'new' || item.user_conn_type == '' ? <View style = {styles.icon_block}>
                         <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width}>
-                           <Text style={styles.btn_text}>Connect</Text>
+                           <Text style={styles.btn_text}>{item.receiver_user_status == 'Pending' ? 'Invited': 'Invite'}</Text>
                         </TouchableOpacity>
                         
                     </View> : 
                     <View style = {styles.icon_block}>
                     <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width_1}>
-                       <Text style={styles.btn_text}>Invite</Text>
+                       <Text style={styles.btn_text}>{item.user_conn_type == 'connected' ? 'Connected': 'Connect'}</Text>
                     </TouchableOpacity>
                     
                 </View>}
                     
+                    
+                
                 </View>
             </TouchableOpacity>
         )
@@ -85,17 +87,18 @@ const styles = StyleSheet.create({
        
     },
     icon_width:{
-        width:60,
+        width:80,
         height:32, 
-        backgroundColor:'#ADF350',
+        backgroundColor:'#FFFFFF',
         justifyContent:'center',
         alignItems:'center',
         borderRadius:10
     },
     icon_width_1:{
-        width:60,
+        width:80,
         height:32, 
-        backgroundColor:'#FFFFFF',
+        backgroundColor:'#ADF350',
+        
         justifyContent:'center',
         alignItems:'center',
         borderRadius:10
