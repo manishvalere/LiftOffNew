@@ -8,12 +8,14 @@ export default class InviteFriend extends Component{
     render(){
         const item = this.props.item 
         if(item !== null && item !== undefined){
-
-        console.log('item in invite', item)
+        let con = item.user_conn_type == 'connected'
+        let invite_pending = item.receiver_user_status == 'Pending'
+        /console.log('item in invite', item)
         return(
             <TouchableOpacity
                 style={styles.container}
-                onPress={this.props.onPress}
+                
+                //onPress={this.props.onPress}
             >
                 <View style={styles.first_block}>
                     <Image style={styles.image_block} source={require('../assets/challenge/friend_profile.png')}/>
@@ -25,14 +27,14 @@ export default class InviteFriend extends Component{
                         <Text style={styles.phone}>{item.number}</Text>
                     </View>
                     {item.user_conn_type == 'new' || item.user_conn_type == '' ? <View style = {styles.icon_block}>
-                        <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width}>
+                        <TouchableOpacity disabled = {invite_pending} onPress={this.props.onPress} style={styles.icon_width}>
                            <Text style={styles.btn_text}>{item.receiver_user_status == 'Pending' ? 'Invited': 'Invite'}</Text>
                         </TouchableOpacity>
                         
                     </View> : 
                     <View style = {styles.icon_block}>
-                    <TouchableOpacity onPress={this.props.onPress} style={styles.icon_width_1}>
-                       <Text style={styles.btn_text}>{item.user_conn_type == 'connected' ? 'Connected': 'Connect'}</Text>
+                    <TouchableOpacity disabled = {con} onPress={this.props.onPress} style={styles.icon_width_1}>
+                       <Text style={styles.btn_text}>{item.user_conn_type == 'connected' ? 'Connected': item.receiver_user_status  == 'Pending' ? 'Pending': 'Connect'}</Text>
                     </TouchableOpacity>
                     
                 </View>}

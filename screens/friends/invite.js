@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,ScrollView,StyleSheet ,Dimensions,FlatList ,RefreshControl} from 'react-native';
+import { View, Text,ScrollView,StyleSheet ,Dimensions,FlatList ,RefreshControl,ActivityIndicator} from 'react-native';
 import {MaterialIcons} from 'react-native-vector-icons'
 import FriendCard from '../../components/friend_card';
 import color from '../../constant/colors'
@@ -16,6 +16,7 @@ import Contacts from 'react-native-contacts';
 import { getUserList,inviteUser } from '../../actions';
 import InviteFriend from '../../components/inviteFriend';
 import {Toast, Root} from 'native-base';
+
 const data = ['1', '2', '3', '4','5', '6', '7', '8', '9']
 export  class Invite extends Component{
     constructor(props){
@@ -25,6 +26,7 @@ export  class Invite extends Component{
             contact_:[], 
             contacts:[],
             search_result:[],
+            friendLoading:false
 
             
         }
@@ -54,6 +56,9 @@ export  class Invite extends Component{
         this.props.dispatchgetUserList(this.props.JWT_Token);
       }
         if(this.props.userList !== prevProps.userList){
+          this.setState({
+            friendLoading:true
+          })
             let contacts =this.state.contacts;
             let users = this.props.userList;
            
@@ -89,6 +94,9 @@ export  class Invite extends Component{
                 o1.connection_type = connection_type;
                 o1.user_conn_type = user_conn_type;
               }
+              this.setState({
+                friendLoading:false
+              })
             return contacts;  
           });
                 //console.log('contacttcctc', result)
@@ -271,6 +279,7 @@ export  class Invite extends Component{
     render(){
         console.log('contact',this.state.contact_,)
         return(
+          
             <View style={styles.container}>
 
               <View style={styles.invite_head_block}>
@@ -279,9 +288,10 @@ export  class Invite extends Component{
                 </View>
                 
                 <View style={{flex:1}}>
+                  {this.props.friendLoading ? <ActivityIndicator color='white' size = {20}/>:
                     <FlatList
                       // data={this.state.contact_}
-                                            data={this.state.search_result.length> 0 ? this.state.search_result : this.state.contacts}
+                      data={this.state.search_result.length> 0 ? this.state.search_result : this.state.contacts}
 
                       renderItem={this.renderItem}
                         keyExtractor={(item,index)=>item.recordID}
@@ -297,7 +307,7 @@ export  class Invite extends Component{
                           
                         />
                       }
-                    />
+                    />}
                 </View>
                 
 

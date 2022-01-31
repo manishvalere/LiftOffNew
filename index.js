@@ -6,6 +6,7 @@ import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification from "react-native-push-notification";
 import messaging from '@react-native-firebase/messaging';
 messaging().onMessage(async remoteMessage => {
+  console.log('notification index remote', remoteMessage)
     PushNotificationIOS.addNotificationRequest({
       id: remoteMessage.messageId,
       body: remoteMessage.notification.body,
