@@ -13,7 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		843307DC271577DE002DE1BE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843307DB271577DE002DE1BE /* GoogleService-Info.plist */; };
+		5F13CBC227C5287400DFAC51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F13CBC127C5287400DFAC51 /* GoogleService-Info.plist */; };
 		84D684A326BA6D1800875352 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84D6849026BA6D1800875352 /* Montserrat-Black.ttf */; };
 		84D684A426BA6D1800875352 /* Montserrat-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84D6849126BA6D1800875352 /* Montserrat-BlackItalic.ttf */; };
 		84D684A526BA6D1800875352 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84D6849226BA6D1800875352 /* Montserrat-Bold.ttf */; };
@@ -49,9 +49,9 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = LiftOff/main.m; sourceTree = "<group>"; };
 		1B16B60F215148F5B2969E82 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "LiftOff/noop-file.swift"; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-LiftOff.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiftOff.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F13CBC127C5287400DFAC51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-LiftOff.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiftOff.debug.xcconfig"; path = "Target Support Files/Pods-LiftOff/Pods-LiftOff.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-LiftOff.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiftOff.release.xcconfig"; path = "Target Support Files/Pods-LiftOff/Pods-LiftOff.release.xcconfig"; sourceTree = "<group>"; };
-		843307DB271577DE002DE1BE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../googleservice/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		84D6849026BA6D1800875352 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		84D6849126BA6D1800875352 /* Montserrat-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BlackItalic.ttf"; sourceTree = "<group>"; };
 		84D6849226BA6D1800875352 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 		13B07FAE1A68108700A75B9A /* LiftOff */ = {
 			isa = PBXGroup;
 			children = (
-				843307DB271577DE002DE1BE /* GoogleService-Info.plist */,
+				5F13CBC127C5287400DFAC51 /* GoogleService-Info.plist */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -277,7 +277,7 @@
 				84D684B326BA6D1800875352 /* Montserrat-Thin.ttf in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				84D684A826BA6D1800875352 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
-				843307DC271577DE002DE1BE /* GoogleService-Info.plist in Resources */,
+				5F13CBC227C5287400DFAC51 /* GoogleService-Info.plist in Resources */,
 				84D684B426BA6D1800875352 /* Montserrat-ThinItalic.ttf in Resources */,
 				84D684A726BA6D1800875352 /* Montserrat-ExtraBold.ttf in Resources */,
 				84D684AB26BA6D1800875352 /* Montserrat-Italic.ttf in Resources */,
@@ -448,7 +448,7 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution: Tyler Slater (4H698238YC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Tyler Slater (4H698238YC)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4H698238YC;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -458,7 +458,7 @@
 				INFOPLIST_FILE = LiftOff/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 3.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -485,13 +485,13 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution: Tyler Slater (4H698238YC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Tyler Slater (4H698238YC)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4H698238YC;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LiftOff/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 3.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

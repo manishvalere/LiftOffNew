@@ -1,4 +1,4 @@
-import { GET_COMPLETE_CHALLENGE,SET_PROFILE_IMAGE,GET_PERSONAL_BEST ,GET_LEADER,GET_GYM_PARTNER} from "../constant";
+import { GET_COMPLETE_CHALLENGE,SET_PROFILE_IMAGE,GET_PERSONAL_BEST ,GET_PERSONAL_BEST_FILTER,GET_LEADER,GET_GYM_PARTNER} from "../constant";
 import color from '../constant/colors'
 import { getHeaders, getRefreshtoken, login, logout } from './authantication';
 import axios from 'axios';
@@ -110,21 +110,21 @@ export function getCompleteChallenges(jwt){
   }
   export function getPersonalBest(jwt){
    
-   // console.log('get personal action is calling')
+    console.log('log  details calling', jwt)
     return (dispatch, getState) => {
       dispatch({ type:  GET_PERSONAL_BEST });
       axios({
         method: 'POST',
-        url: color.baseURL + 'auth/personal-best',
-       headers: getHeaders(jwt),
+        url: color.baseURL + 'auth/log-deatils',
+        headers: getHeaders(jwt),
         // data: {
         //   challenge_id:id,
         //   receiver_user_mob_no:number
         // }
       })
-  
+      
       .then((response) => {
-      //   console.log('response in personal best ', response.data.data, response.status)
+         console.log('response in personal best ', response.data.data, response.status)
         if(response.data.status == 200) {
           
           dispatch({ type:  GET_PERSONAL_BEST + '_SUCCESS', payload: response.data.data, image_url:response.data.url })
@@ -154,7 +154,55 @@ export function getCompleteChallenges(jwt){
         if(error) {
           dispatch({ type:  GET_PERSONAL_BEST + '_FAILUARE', payload: error})
         }
-       // console.log('error in catch',error);
+        console.log('error in catch',error);
+        dispatch({ type:    GET_PERSONAL_BEST + '_FAILUARE', payload: error})
+      });
+    }
+  }
+  export function getPersonalBestNewFilter(data,jwt){
+   
+    console.log('log  details calling')
+    return (dispatch, getState) => {
+      dispatch({ type:  GET_PERSONAL_BEST });
+      axios({
+        method: 'POST',
+        url: color.baseURL + 'auth/log-deatils',
+        headers: getHeaders(jwt),
+        data: data
+      })
+      
+      .then((response) => {
+         console.log('response in personal best ', response.data.data, response.status)
+        if(response.data.status == 200) {
+          
+          dispatch({ type:  GET_PERSONAL_BEST + '_SUCCESS', payload: response.data.data, image_url:response.data.url })
+        
+        }else if(response.data.status == 400){
+          //console.log('response in login 401', response.error)
+          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+        }
+        else if(response.data.status == 401){
+          //console.log('response in login 401', response.error)
+          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+        }else if(response.data.status == 201){
+          //console.log('response in login 401', response.error)
+          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+        }
+        if(response.data.status == 422){
+          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          if(error.response.data.status == 401){
+          //  console.log('get logout  is caliing in catch')
+            dispatch({ type: 'TOKENEXPIRE', payload: 'token_expire'})
+          }
+        }
+        if(error) {
+          dispatch({ type:  GET_PERSONAL_BEST + '_FAILUARE', payload: error})
+        }
+        console.log('error in catch',error);
         dispatch({ type:    GET_PERSONAL_BEST + '_FAILUARE', payload: error})
       });
     }
@@ -163,7 +211,7 @@ export function getCompleteChallenges(jwt){
    
     console.log('get personal filter action is calling ******', data)
     return (dispatch, getState) => {
-      dispatch({ type:  GET_PERSONAL_BEST });
+      dispatch({ type:  GET_PERSONAL_BEST_FILTER });
       axios({
         method: 'POST',
         url: color.baseURL + 'auth/personal-best',
@@ -172,24 +220,24 @@ export function getCompleteChallenges(jwt){
       })
   
       .then((response) => {
-       //  console.log('response in personal best ', response.data.data, response.status)
+        console.log('response in personal best ', response.data.data, response.status)
         if(response.data.status == 200) {
-          
-          dispatch({ type:  GET_PERSONAL_BEST + '_SUCCESS', payload: response.data.data, image_url:response.data.url })
+          console.log('status 200 is callign')
+          dispatch({ type:  GET_PERSONAL_BEST_FILTER + '_SUCCESS', payload: response.data.data, image_url:response.data.url })
         
         }else if(response.data.status == 400){
           //console.log('response in login 401', response.error)
-          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+          dispatch({type:   GET_PERSONAL_BEST_FILTER + '_FAILUARE',payload:response.message})
         }
         else if(response.data.status == 401){
           //console.log('response in login 401', response.error)
-          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+          dispatch({type:   GET_PERSONAL_BEST_FILTER + '_FAILUARE',payload:response.message})
         }else if(response.data.status == 201){
         //  console.log('response in login 201', response.error)
-          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+          dispatch({type:   GET_PERSONAL_BEST_FILTER + '_FAILUARE',payload:response.message})
         }
         if(response.data.status == 422){
-          dispatch({type:   GET_PERSONAL_BEST + '_FAILUARE',payload:response.message})
+          dispatch({type:   GET_PERSONAL_BEST_FILTER + '_FAILUARE',payload:response.message})
         }
       })
       .catch((error) => {
@@ -200,10 +248,10 @@ export function getCompleteChallenges(jwt){
           }
         }
         if(error) {
-          dispatch({ type:  GET_PERSONAL_BEST + '_FAILUARE', payload: error})
+          dispatch({ type:  GET_PERSONAL_BEST_FILTER + '_FAILUARE', payload: error})
         }
-       // console.log('error in catch',error);
-        dispatch({ type:    GET_PERSONAL_BEST + '_FAILUARE', payload: error})
+        console.log('error in catch',error);
+        dispatch({ type:    GET_PERSONAL_BEST_FILTER + '_FAILUARE', payload: error})
       });
     }
   }

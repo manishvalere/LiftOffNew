@@ -57,13 +57,14 @@ export  class Invite_Friends extends Component{
           var new_pending = this.props.connectedFriend
 
     for(let i=0;i<new_pending.length; i++){
-        const str = new_pending[i].receiver_user_mob_no
+     // console.log('iuhoqwjdoqmd', new_pending[i].phone_number)
+        const str = new_pending[i].phone_number
        // const str = 'ECMAScript 2015'; 
-       let new_str = str.slice(str.length - 10);
-       new_pending[i].receiver_user_mob_no = str
+       //let new_str = str.slice(str.length - 10);
+       new_pending[i].phone_number = str
     }
    // console.log('new paending, ', new_pending)
-          var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.receiver_user_mob_no))
+          var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.phone_number))
          // console.log('result in connected friebd in cdu', result);
           this.setState({
             connected_friend:result
@@ -123,12 +124,12 @@ export  class Invite_Friends extends Component{
                 var new_pending = this.props.connectedFriend
            
                 for(let i=0;i<new_pending.length; i++){
-                    const str = new_pending[i].receiver_user_mob_no
+                    const str = new_pending[i].phone_number
                    // const str = 'ECMAScript 2015'; 
                    let new_str = str.slice(str.length - 10);
-                   new_pending[i].receiver_user_mob_no = new_str
+                   new_pending[i].phone_number = new_str
                 }
-                      var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.receiver_user_mob_no))
+                      var result = this.state.contacts.filter(o1 => new_pending.some(o2 => o1.number === o2.phone_number))
                     //  console.log('result in connected friebd', result);
                       this.setState({
                         connected_friend:result

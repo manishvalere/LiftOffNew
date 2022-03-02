@@ -14,6 +14,7 @@ import {addCompleteChallnge } from '../../actions/challenge';
 import { getRefreshtoken, logout } from '../../actions';
 import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
 import KeepAwake from 'react-native-keep-awake';
+import TimePicker from "react-native-24h-timepicker";
 const data=['1', '2', '3', '4', '5']
 const reps = [
     {
@@ -311,6 +312,16 @@ export class Start_challenge extends Component{
       
       
       }
+      onCancel() {
+        this.TimePicker.close();
+      }
+    
+      onConfirm(hour, minute) {
+        //this.setState({ time: `${hour}:${minute}` });
+        this.TimePicker.close();
+        this.changeobject(`${hour}`, 'Minute');
+        this.changeobject(`${minute}`, 'Seconds');
+      }
       changeobject=(text, field, index)=>{
         //   var field_ = field
          var i = this.state.form.length-1;
@@ -327,24 +338,13 @@ export class Start_challenge extends Component{
                 form_new[index].weight = text;
                 break;
             case 'Minute':
-                if (text.length === 2) {
-                    this.secondTextInput.focus();
-                    form_new[i].seconds = '00'
-                  }
+                
                 form_new[i].minute = text;
                 break;
             case 'Seconds':
-                var isValid = /^([0-5][0-9])(:[0-5][0-9])?$/.test(text);
-                if(isValid){
-                    form_new[i].seconds = text;
-                    this.setState({
-                        error:''
-                    })
-                }else{
-                    this.setState({
-                        error:'Please enter valid time format!'
-                    })
-                }
+               
+                form_new[i].seconds = text;
+                    
                 break;
             case 'Calories':
                 form_new[i].calories = text;    
@@ -415,30 +415,47 @@ export class Start_challenge extends Component{
               />
                 {/* <TextInput returnKeyType='done' value={str_reps} maxLength={3} onFocus={this.errordisable} keyboardType='numeric' onChangeText={(text)=>this.changeobject(text, 'Reps')}  placeholderTextColor='#FFFFF'  style={styles.table_content_text} placeholder= 'Reps'/>  */}
             </View> :
-             <View  style={styles.table_content_time}>
-             <TextInput 
+             <TouchableOpacity  onPress={() => this.TimePicker.open()}  style={styles.table_content_time}>
+             {/* <TextInput 
              onFocus={this.errordisable} 
              keyboardType='numeric' 
              onChangeText={(text)=>this.changeobject(text, 'Minute')}  
              placeholderTextColor='rgba(255, 255, 255, 0.5)'  
              style={styles.table_content_text1} placeholder= 'HH'
              returnKeyType="next"
-             onSubmitEditing={() => { this.secondTextInput.focus(); }}
+             //onSubmitEditing={() => { this.secondTextInput.focus(); }}
              maxLength={2}
              />
              <Text style={styles.timecolumn}>{":"}</Text>
              <TextInput 
              onFocus={this.errordisable} 
              keyboardType='numeric' 
+            // value={this.state.form[index].Seconds}
              onChangeText={(text)=>this.changeobject(text, 'Seconds')}  
              placeholderTextColor='rgba(255, 255, 255, 0.5)'  
              style={styles.table_content_text1} 
              ref={(input) => { this.secondTextInput = input; }}
-             placeholder= {this.state.form[index].seconds}
+             placeholder= {this.state.form[index].Seconds}
              returnKeyType='done'
              maxLength={2}
-             />
-             </View>}
+             /> */}
+              <TouchableOpacity
+          onPress={() => this.TimePicker.open()}
+          style={styles.table_content_text1}
+        >
+          <Text style={styles.table_content_text1}>{this.state.form[index].minute} : {this.state.form[index].seconds}</Text>
+        </TouchableOpacity>
+              <TimePicker
+          ref={ref => {
+            this.TimePicker = ref;
+          }}
+          value={this.state.form[index].minute}
+          maxHour={100}
+          //hourUnit={00}
+          onCancel={() => this.onCancel()}
+          onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
+        />
+             </TouchableOpacity>}
             
                 {this.state.category_type !== 7? 
                 (this.props.sub_category_detail !== null && this.props.sub_category_detail.swr_status == 'Enable' ? 
@@ -505,7 +522,7 @@ export class Start_challenge extends Component{
                       count:this.state.count+1
                     };
                   });
-                  this.state.form.push(this.state.category_type !== 7 ? {sets:this.state.count+1,reps:this.state.count+1,weight:'' } :{minute:'', seconds:'MM',calories:'',distance:'' });
+                  this.state.form.push(this.state.category_type !== 7 ? {sets:this.state.count+1,reps:this.state.count+1,weight:'' } :{minute:'HH:MM', seconds:'MM',calories:'',distance:'' });
             }else{
                 this.setState({
                     error:'Please fill all the field!'
@@ -521,7 +538,7 @@ export class Start_challenge extends Component{
                       count:this.state.count+1
                     };
                   });
-                  this.state.form.push(this.state.category_type !== 7 ? {sets:this.state.count+1,reps:this.state.count+1,weight:'' } : {minute:'', seconds:'MM',calories:'',distance:'' });
+                  this.state.form.push(this.state.category_type !== 7 ? {sets:this.state.count+1,reps:this.state.count+1,weight:'' } : {minute:'HH', seconds:'MM',calories:'',distance:'' });
             }else{
                 this.setState({
                     error:'Please fill all the field!'
@@ -538,7 +555,7 @@ export class Start_challenge extends Component{
               count:this.state.count+1
             };
           });
-          this.state.form.push(this.state.category_type !== 7 ? {sets:this.state.count+1,reps:this.state.count+1,weight:'' } :  {minute:'', seconds:'MM',calories:'',distance:'' });
+          this.state.form.push(this.state.category_type !== 7 ? {sets:this.state.count+1,reps:this.state.count+1,weight:'' } :  {minute:'HH', seconds:'MM',calories:'',distance:'' });
       }}
     }
       onBuffer(bufferObj) {

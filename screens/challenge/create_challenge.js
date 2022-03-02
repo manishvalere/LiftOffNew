@@ -19,6 +19,7 @@ import Date_picker_Native from '../../components/native_date_picker';
 import DatePicker from 'react-native-date-ranges';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
+import TimePicker from "react-native-24h-timepicker";
 const days = [
     {
         'days':'1 Day',
@@ -110,7 +111,7 @@ export  class Create_Challenge extends Component{
           calories:null,
           duration:null,
           category_id:'',
-          minute:null,
+          minute:'HH:MM',
           second:null,
           main_name:null,
           isEnabled: false ,
@@ -127,7 +128,14 @@ export  class Create_Challenge extends Component{
         };
         this.ChildElement = React.createRef();
       }
-     
+      onCancel() {
+        this.TimePicker.close();
+      }
+    
+      onConfirm(hour, minute) {
+        this.setState({ minute: `${hour}:${minute}` });
+        this.TimePicker.close();
+      }
     setRepsOption=()=>{
         const reps_op = [];
         for(i=1;i<=100;i++){
@@ -182,9 +190,14 @@ export  class Create_Challenge extends Component{
                       exercise_date:this.state.date,
                       detail:this.state.category_id == '7' ? description_cardio : description_all,
                   });
+                  var today = new Date();
+                  var dd = String(today.getDate()).padStart(2, '0');
+                  var mm = today.getMonth()+1 //January is 0!
+                  var yyyy = today.getFullYear();
+                  today = mm + '/' + dd + '/' + yyyy;
                   this.setState({
                     challenge: null,
-                    date:'',
+                    date:today,
                     sets:null,
                     reps:null,
                     weight:null,
@@ -198,6 +211,7 @@ export  class Create_Challenge extends Component{
                     main_name:null,
                     isEnabled: false ,
                     challengeError:'',
+                    mainchallengeError:'',
                     setsError:'',
                     repsError:'',
                     weightError:'',
@@ -250,19 +264,19 @@ export  class Create_Challenge extends Component{
         //  console.log('get subcategoty on select is calling')
         this.props.dispatchgetSubcategory(id)
       }
-      onDateChange=(value)=> {
-        this.setState({
-            date: value
-        });
-      }
-       onDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || this.state.date
-        //setShow(Platform.OS === 'ios');
-        //setDate(currentDate);
-        this.setState({
-            date: currentDate
-        });
-      };
+    //   onDateChange=(value)=> {
+    //     this.setState({
+    //         date: value
+    //     });
+    //   }
+    //    onDateChange = (event, selectedDate) => {
+    //     const currentDate = selectedDate || this.state.date
+    //     //setShow(Platform.OS === 'ios');
+    //     //setDate(currentDate);
+    //     this.setState({
+    //         date: currentDate
+    //     });
+    //   };
       onSetsChange=(value)=> {
         this.setState({
             sets: value
@@ -339,7 +353,7 @@ export  class Create_Challenge extends Component{
         if(this.validate()){
         //this.props.navigation.navigate('challenge_created')
         var description_all={sets:this.state.sets,reps:this.state.reps, duration:this.state.duration};
-        var description_cardio={distance:this.state.distance, time:this.state.minute+':'+this.state.second, duration:this.state.duration};
+        var description_cardio={distance:this.state.distance, time:this.state.minute, duration:this.state.duration};
 
         //const childelement = this.ChildElement.current;
         // const date = childelement.state.date
@@ -356,6 +370,7 @@ export  class Create_Challenge extends Component{
       }
       validate=()=>{
         let challengeError = "";
+        let mainchallengeError = "";
         let distanceError = "";
         let minuteError = "";
         let caloryError = "";
@@ -364,22 +379,26 @@ export  class Create_Challenge extends Component{
         let durationError = "";
 
         if(this.state.category_id == '7'){
+            if(this.state.main_name == null){
+                mainchallengeError='Please select any category!'
+            }
             if(this.state.challenge == null){
                 challengeError='Please select any challenge!'
             }
             if(this.state.distance == null){
                 distanceError="Please enter distance!"
             }
-            if(this.state.minute == null){
-                minuteError="Please enter time!"
+            if(this.state.minute == null || this.state.minute == 'HH:MM'){
+                minuteError="Please select time!"
             }
-            if(this.state.second == null){
-                minuteError="Please enter time!"
-            }
+           
             if(this.state.duration == null){
                 durationError="Please enter duration!"
             }
         }else{
+            if(this.state.main_name == null){
+                mainchallengeError='Please select any category!'
+            }
             if(this.state.challenge == null){
                 challengeError='Please select any challenge!'
             }
@@ -393,8 +412,8 @@ export  class Create_Challenge extends Component{
                 durationError="Please enter duration!"
             }
         }
-        if(challengeError || distanceError || minuteError || caloryError || setsError || repsError || durationError){
-            this.setState({challengeError, distanceError,minuteError,caloryError,setsError,repsError,durationError});
+        if(mainchallengeError || challengeError || distanceError || minuteError || caloryError || setsError || repsError || durationError){
+            this.setState({challengeError, distanceError,minuteError,caloryError,setsError,repsError,durationError, mainchallengeError});
             return false;
         }
         return true;
@@ -420,7 +439,7 @@ export  class Create_Challenge extends Component{
         // })
     }
     render(){
-        
+        console.log('date', this.state.date)
         const placeholder = {
             label: 'Reps',
             value: null,
@@ -470,7 +489,7 @@ export  class Create_Challenge extends Component{
                     <>
                     <Challenge_picker placeholder='Please select workout' main={true} data={main} color='white' value={this.state.category_id} onValueChange={this.onChallengeChange} {...this.state} width='80%'/>
                     <View style={{background:'#363636', borderTopWidth:1,borderTopColor:' rgba(255, 255, 255, 0.3)', height:60, }}>
-                        
+                    <Text style={styles.error}>{this.state.mainchallengeError}</Text>
                     </View>
                     </> : null}
                     
@@ -590,7 +609,7 @@ export  class Create_Challenge extends Component{
                         blockBefore={true}
                         allowFontScaling = {true} // optional
                         placeholder={this.state.date}
-                        onConfirm={text=>this.setState({date:text})}
+                        onConfirm={text=>this.setState({date:text.currentDate})}
                         mode={this.state.value}
                         customButton = {this.customButton}
                         markText='Range'
@@ -645,8 +664,23 @@ export  class Create_Challenge extends Component{
                     <View style={{height:60,width:'100%', flexDirection:'row',justifyContent:'space-between', marginBottom:10}}>
                             <View style={{width:'50%'}}>
                             {this.state.category_id == '7' ?  
-                            <Item style={styles.item} >
-                            <TextInput 
+                            <Item  onPress={() => this.TimePicker.open()} style={styles.item} >
+                                <TouchableOpacity
+                                onPress={() => this.TimePicker.open()}
+                                style={styles.input_2}
+                                >
+                                <Text style={styles.minute}>{this.state.minute}</Text>
+                                </TouchableOpacity>
+                                    <TimePicker
+                                ref={ref => {
+                                    this.TimePicker = ref;
+                                }}
+                                value={this.state.minute}
+                                maxHour={100}
+                                onCancel={() => this.onCancel()}
+                                onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
+                                />
+                            {/* <TextInput 
                            placeholder='HH'
                            placeholderTextColor='#FFFFFF'
                            value={this.state.minute}
@@ -678,7 +712,7 @@ export  class Create_Challenge extends Component{
                             style={styles.input_1}
                             //defaultValue={this.state.second}
                             onFocus={()=>{this.setErrorNull, this.setmm()}}
-                            />
+                            /> */}
                         </Item>
                            :
                             // <InputText  
@@ -890,6 +924,35 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start',
         alignItems:'center',
         textAlign:'left'
+       // width:'100%'
+    },
+    input_2:{
+        fontSize:16,
+        //lineHeight:50,
+        fontWeight:'300',
+        color:'#FFFFFF',
+        //width:'20%',
+        //backgroundColor:'yellow',
+        //height:60,
+        justifyContent:'center',
+        alignItems:'center',
+        textAlign:'left'
+       // width:'100%'
+    },
+    minute:{
+        fontSize:16,
+        display:'flex',
+        //lineHeight:20,
+        fontWeight:'300',
+        color:'#FFFFFF',
+        //width:'20%',
+      //  backgroundColor:'yellow',
+        // /height:60,
+        justifyContent:'center',
+        alignItems:'center',
+        textAlign:'left',
+        marginLeft:10
+        
        // width:'100%'
     },
     item:{

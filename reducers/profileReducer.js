@@ -1,10 +1,11 @@
-import { GET_COMPLETE_CHALLENGE, GET_COMPLETE_CHALLENGE_SUCCESS, GET_COMPLETE_CHALLENGE_FAILUARE, GET_PERSONAL_BEST, GET_PERSONAL_BEST_FAILUARE, GET_PERSONAL_BEST_SUCCESS, GET_LEADER, GET_LEADER_SUCCESS, GET_LEADER_FAILUARE, GET_GYM_PARTNER, GET_GYM_PARTNER_SUCCESS, GET_GYM_PARTNER_FAILUARE } from "../constant";
+import { GET_COMPLETE_CHALLENGE, GET_COMPLETE_CHALLENGE_SUCCESS,GET_PERSONAL_BEST_FILTER,GET_PERSONAL_BEST_FILTER_SUCCESS ,GET_PERSONAL_BEST_FILTER_FAILUARE,GET_COMPLETE_CHALLENGE_FAILUARE, GET_PERSONAL_BEST, GET_PERSONAL_BEST_FAILUARE, GET_PERSONAL_BEST_SUCCESS, GET_LEADER, GET_LEADER_SUCCESS, GET_LEADER_FAILUARE, GET_GYM_PARTNER, GET_GYM_PARTNER_SUCCESS, GET_GYM_PARTNER_FAILUARE } from "../constant";
 
 const initialState = {
 	profileLoading:null,
     completedChallenge:[],
     challengeError:false,
     personal_best:null,
+    personal_best_filter:null,
     leader:[],
     image_url:'',
     gym_partner:{}
@@ -16,11 +17,22 @@ const profileReducer = (state = initialState, action) => {
             return {...state, profileLoading:true,completedChallenge:[]}
         
         case GET_COMPLETE_CHALLENGE_SUCCESS:
-            //console.log('completyed challenge rucer', action.payload)
+            
             return {...state, profileLoading:false,completedChallenge:action.payload}
 
         case GET_COMPLETE_CHALLENGE_FAILUARE:
             return {...state, profileLoading:false,completedChallenge:[],challengeError:true}
+        case GET_PERSONAL_BEST_FILTER:
+            console.log('completyed challenge rucer init', action.payload)
+            return {...state, profileLoading:true,personal_best_filter:null}
+        
+        case GET_PERSONAL_BEST_FILTER +'_SUCCESS':
+            console.log('completyed challenge rucer', action.payload)
+            return {...state, profileLoading:false,personal_best_filter:action.payload}
+
+        case GET_PERSONAL_BEST_FILTER+'_FAILUARE':
+          //  console.log('personal best record failuare reducer')
+            return {...state, profileLoading:false,personal_best_filter:null}
         case GET_PERSONAL_BEST:
             return {...state, profileLoading:true,personal_best:null}
         

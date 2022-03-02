@@ -14,7 +14,7 @@ export default class PersonalBest_Comp extends Component{
                   )
               }else{
                   return(
-                      <Text key={item.index} style={styles.persnal_text}>{item.item.Distance} Miles  | {item.item.Minute} : {item.item.Seconds} Hour | {item.item.Calories} Calories</Text>
+                      <Text key={item.index} style={styles.persnal_text}>{item.item.Distance} Miles  | {item.item.Minute+':'+item.item.Seconds} Hour | {item.item.Calories} Calories</Text>
                   )
               }
       
@@ -36,13 +36,13 @@ export default class PersonalBest_Comp extends Component{
             )
         }else{
             return(
-                <Text key={index} style={styles.challenge_detail}>{i.item.Distance} Miles  | {i.item.Minute} : {i.item.Seconds} Hour | {i.item.Calories} Calories</Text>
+                <Text key={index} style={styles.challenge_detail}>{i.item.Distance} Miles  | {i.item.Minute+':'+i.item.Seconds} Hour | {i.item.Calories} Calories</Text>
             )
         }
     }
     renderItem=(item)=>{
         const ii= item.item
-       const personal_data = ii.description
+       const personal_data = ii.description ?? []
       // console.log('personal data', personal_data)
         return(
             
@@ -113,7 +113,7 @@ export default class PersonalBest_Comp extends Component{
             
                 <FlatList
                   data={this.props.data}
-                  keyExtractor={(item)=>item.id.toString()}
+                    //keyExtractor={(item)=>item.id.toString()}
                   renderItem={this.renderItem}
                   horizontal={true}
                   ListEmptyComponent={this.rendernodata()}

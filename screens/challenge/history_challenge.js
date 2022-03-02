@@ -84,7 +84,7 @@ export  class HistoryChallenge extends Component{
                    </View>
                    <View>
                        {i.exercise_type !== 'Cardio' ? <Text style={styles.challenge_detail}>{sets} Sets | {reps} Reps | COMPLETED</Text>:
-                       <Text style={styles.challenge_detail}>{distance} KM | {time} Hours | {calories} Calories</Text>
+                       <Text style={styles.challenge_detail}>{distance} Miles | {time} Hours | {calories} Calories</Text>
                        }
                        
                    </View>

@@ -35,7 +35,7 @@ import  History  from '../screens/Profile/history';
 import Challenge_Detail from '../screens/challenge/challenge_details';
 import  SendFeedback  from '../screens/setting/sendFeedBack';
 import  EditProfile  from '../screens/Profile/edit_profile';
-import { Friend_Home } from '../screens/friends/friendsHome';
+import  Friend_Home  from '../screens/friends/friendsHome';
 var modal_flag = false
 const Tab = createBottomTabNavigator();
 function SettingIcon() {

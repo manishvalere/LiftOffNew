@@ -144,7 +144,7 @@ export  class CurrentChallenge extends Component{
                    </View>
                    <View>
                        {i.exercise_type !== 'Cardio' ? <Text style={styles.challenge_detail}>{sets} Sets | {reps} Reps | {weight} Lbs Weight</Text>:
-                       <Text style={styles.challenge_detail}>{distance} KM | {time} Minute | {calories} Calories</Text>
+                       <Text style={styles.challenge_detail}>{distance} Miles | {time} Minute | {calories} Calories</Text>
                        }
                        
                    </View>
