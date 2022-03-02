@@ -146,7 +146,7 @@ export class PersonalBest extends Component{
                                 )
                             }else{
                                 return(
-                                    <Text key={ index} style={styles.challenge_detail}>{i.Distance} Miles  | {i.Minute} Hour | {i.Calories} Calories</Text>
+                                    <Text key={ index} style={styles.challenge_detail}>{i.Distance} Miles  | {i.Minute+':'+i.Seconds} Hour | {i.Calories} Calories</Text>
                                 )
                             }
                         

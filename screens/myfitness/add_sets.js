@@ -49,9 +49,11 @@ export class Add_sets extends Component{
       }
     
       onConfirm(hour, minute) {
-        //this.setState({ time: `${hour}:${minute}` });
+        this.setState({ timePick: `${hour}:${minute}` });
         this.TimePicker.close();
-        this.changeobject(`${hour}:${minute}`, 'Minute')
+        
+        this.changeobject(hour, 'Minute')
+        this.changeobject(minute, 'Seconds')
       }
     componentDidUpdate(prevProps){
        // console.log(' CDU is calling ', this.props.token_expire)
@@ -256,6 +258,9 @@ export class Add_sets extends Component{
              case 'Minute':
                 
              form_new[i].Minute = text;
+             case 'Seconds':
+                
+             form_new[i].Seconds = text;
             //     break;
             // case 'Seconds':
             //     //console.log('form_new[i].seconds',form_new[i].Seconds )
@@ -376,13 +381,15 @@ export class Add_sets extends Component{
           onPress={() => this.TimePicker.open()}
           style={styles.table_content_text1}
         >
-          <Text style={styles.table_content_text1}>{this.state.form[index].Minute}</Text>
+          <Text style={styles.table_content_text1}>{this.state.form[index].Minute}:{this.state.form[index].Seconds}</Text>
+          
         </TouchableOpacity>
               <TimePicker
           ref={ref => {
             this.TimePicker = ref;
           }}
-          value={this.state.form[index].Minute}
+          //value={this.state.form[index].Minute}
+          value={this.state.timePick}
           maxHour={100}
           onCancel={() => this.onCancel()}
           onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
@@ -427,7 +434,7 @@ export class Add_sets extends Component{
                 )
             }else{
                 return(
-                    <Text key={item.index} style={styles.persnal_text}>{item.item.Distance} Miles  | {item.item.Minute} Hour | {item.item.Calories} Calories</Text>
+                    <Text key={item.index} style={styles.persnal_text}>{item.item.Distance} Miles  | {item.item.Minute+':'+item.item.Seconds} Hour | {item.item.Calories} Calories</Text>
                 )
             }
     
@@ -478,7 +485,7 @@ export class Add_sets extends Component{
                       count:this.state.count+1
                     };
                   });
-                  this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } : {Minute:'HH:MM', Seconds:'MM',Calories:'',Distance:'' });
+                  this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } : {Minute:'HH', Seconds:'MM',Calories:'',Distance:'' });
             }else{
                 this.setState({
                     error:'Please fill all the field!'
@@ -495,7 +502,7 @@ export class Add_sets extends Component{
               count:this.state.count+1
             };
           });
-          this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } :  {Minute:'HH:MM', Seconds:'MM',Calories:'',Distance:'' });
+          this.state.form.push(this.state.category_type !== 7 ? {Sets:this.state.count+1,Reps:'',Weight:this.state.swr == 'Disable' ? '0' : '' } :  {Minute:'HH', Seconds:'MM',Calories:'',Distance:'' });
       }}
     }
       onBuffer(bufferObj) {

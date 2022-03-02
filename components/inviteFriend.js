@@ -9,8 +9,8 @@ export default class InviteFriend extends Component{
         const item = this.props.item 
         if(item !== null && item !== undefined){
         let con = item.user_conn_type == 'connected'
-        let invite_pending = item.receiver_user_status == 'Pending'
-        /console.log('item in invite', item)
+        let invite_pending = item.receiver_user_status == 'Pending' ;
+        //console.log('item in invite', item)
         return(
             <TouchableOpacity
                 style={styles.container}
